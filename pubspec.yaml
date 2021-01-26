@@ -1,0 +1,39 @@
+name: Study_Phonics
+description: A new Flutter application.
+
+publish_to: 'none'
+
+version: 1.0.0+1.0.0
+
+environment:
+  sdk: '>=2.7.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_tts: ^2.1.0
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.2.4
+#  admob_flutter: ^1.0.1
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/image/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/appicon.png"
+
+flutter_native_splash:
+  image: assets/icon/splush.png
+  color: "0077ff"
+
