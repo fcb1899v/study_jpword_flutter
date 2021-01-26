@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nakajimamasao.studyjapanese">
+    package="com.nakajimamasao.studyjpword">
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="たのしくまなぶ・ひらがな・カタカナ"
