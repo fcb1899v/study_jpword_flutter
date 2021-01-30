@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'たのしくまなぶ　ひらがな　カタカナ',
+      title: 'たのしくまなぶ・ひらがな・カタカナ',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.

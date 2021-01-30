@@ -7,15 +7,13 @@ class JaWordClass {
       "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
       "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
       "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
-      "ま", "み", "む", "め", "も", "や", "ゆ", "よ",
-      "ら", "り", "る", "れ", "ろ", "わ", "ん",
-      "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ",
-      "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
-      "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"
-      // ,"きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ",
-      // "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ",
-      // "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ",
-      // "びゃ", "びゅ", "びょ", "ぴゃ", "ぴゅ", "ぴょ",
+      "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り", "る", "れ", "ろ",
+      "わ", "ん", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ",
+      "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ",
+      "きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
+      // "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "みゃ", "みゅ", "みょ", "りゃ", "りょ", "ぎゃ",
+      "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
+      // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
     ];
   }
 
@@ -27,17 +25,17 @@ class JaWordClass {
   jaWord(String word) {
     switch (word) {
       case "あ": return ["", "あ", "ひる", "", "ア", "イスクリーム"];
-      case "い": return ["", "い", "ぬ", "", "イ", "チゴ"];
+      case "い": return ["", "い", "ちご", "", "イ", "ルカ"];
       case "う": return ["", "う", "どん", "", "ウ", "サギ"];
       case "え": return ["", "え", "んぴつ", "", "エ", "レベーター"];
       case "お": return ["", "お", "たまじゃくし", "", "オ", "ムライス"];
       case "か": return ["", "か", "える", "", "カ", "ブトムシ"];
-      case "き": return ["", "き", "んぎょ", "", "キ", "ウイ"];
+      case "き": return ["", "き", "つね", "", "キ", "ウイ"];
       case "く": return ["", "く", "じら", "", "ク", "ッキー"];
       case "け": return ["", "け", "しゴム", "", "ケ", "ーキ"];
       case "こ": return ["", "こ", "うもり", "", "コ", "ーヒー"];
       case "さ": return ["", "さ", "つまいも", "", "サ", "メ"];
-      case "し": return ["", "し", "ろ", "", "シ", "マウマ"];
+      case "し": return ["", "し", "んごう", "", "シ", "マウマ"];
       case "す": return ["", "す", "ずめ", "", "ス", "イカ"];
       case "せ": return ["", "せ", "いざ", "", "セ", "ミ"];
       case "そ": return ["", "そ", "うじき", "", "ソ", "フトクリーム"];
@@ -48,7 +46,7 @@ class JaWordClass {
       case "と": return ["", "と", "ら", "", "ト", "マト"];
       case "な": return ["", "な", "っとう", "", "ナ", "マズ"];
       case "に": return ["", "に", "じ", "", "ニ", "ンジン"];
-      case "ぬ": return ["", "ぬ", "いぐるみ", "", "ヌ", "ノマスク"];
+      case "ぬ": return ["", "ぬ", "いぐるみ", "イ", "ヌ", ""];
       case "ね": return ["", "ね", "こ", "", "ネ", "ギ"];
       case "の": return ["", "の", "りまき", "", "ノ", "ート"];
       case "は": return ["", "は", "さみ", "", "ハ", "ンバーガー"];
@@ -95,6 +93,23 @@ class JaWordClass {
       case "ぷ": return ["", "ぷ", "りん", "", "プ", "レゼント"];
       case "ぺ": return ["", "ぺ", "んぎん", "", "ペ", "ットボトル"];
       case "ぽ": return ["", "ぽ", "っと", "", "ポ", "テトチップス"];
+      case "きゃ": return ["", "きゃ", "べつ", "", "キャ", "ンプファイヤー"];
+      case "きゅ": return ["", "きゅ", "うきゅうしゃ", "", "キュ", "ウリ"];
+      case "きょ": return ["", "きょ", "うかい", "", "キョ", "ウリュウ"];
+      case "しゃ": return ["", "しゃ", "ち", "", "シャ", "ツ"];
+      case "しゅ": return ["", "しゅ", "りけん", "", "シュ", "ーマイ"];
+      case "しょ": return ["", "しょ", "くパン", "", "ショ", "ッピングモール"];
+      case "ちゃ": return ["あか", "ちゃ", "ん", "ガチャガ", "チャ", ""];
+      case "ちゅ": return ["", "ちゅ", "うしゃ", "", "チュ", "ーリップ"];
+      case "ちょ": return ["", "ちょ", "うちょ", "", "チョ", "コレート"];
+      case "ひょ": return ["", "ひょ", "うたん", "", "ヒョ", "ウ"];
+      case "りゅ": return ["", "りゅ", "う", "", "リュ", "ック"];
+      case "ぎゅ": return ["", "ぎゅ", "うどん", "フィ", "ギュ", "アスケート"];
+      case "ぎょ": return ["きん", "ぎょ", "", "", "ギョ", "ーザ"];
+      case "じゃ": return ["", "じゃ", "ぐち", "", "ジャ", "ガイモ"];
+      case "じゅ": return ["もみじまん", "じゅ", "う", "", "ジュ", "ース"];
+      case "じょ": return ["", "じょ", "うききかんしゃ", "", "ジョ", "ウロ"];
+      case "びょ": return ["", "びょ", "ういん", "ガ", "ビョ", "ウ"];
       default: return ["","","", "","",""];
     }
   }
@@ -102,17 +117,17 @@ class JaWordClass {
   jaWordPicture(String word) {
     switch (word) {
       case "あ": return ["assets/image/ahiru.png", "assets/image/aisukurimu.png"];
-      case "い": return ["assets/image/inu.png", "assets/image/ichigo.png"];
+      case "い": return ["assets/image/ichigo.png", "assets/image/iruka.png"];
       case "う": return ["assets/image/udon.png", "assets/image/usagi.png"];
       case "え": return ["assets/image/enpitsu.png", "assets/image/elevator.png"];
       case "お": return ["assets/image/otamajakushi.png", "assets/image/omurice.png"];
       case "か": return ["assets/image/kaeru.png", "assets/image/kabutomushi.png"];
-      case "き": return ["assets/image/kingyo.png", "assets/image/kiwi.png"];
+      case "き": return ["assets/image/kitsune.png", "assets/image/kiwi.png"];
       case "く": return ["assets/image/kujira.png", "assets/image/cookie.png"];
       case "け": return ["assets/image/keshigomu.png", "assets/image/cake.png"];
       case "こ": return ["assets/image/koumori.png", "assets/image/coffee.png"];
       case "さ": return ["assets/image/satsumaimo.png", "assets/image/same.png"];
-      case "し": return ["assets/image/shiro.png", "assets/image/shimauma.png"];
+      case "し": return ["assets/image/shingo.png", "assets/image/shimauma.png"];
       case "す": return ["assets/image/suzume.png", "assets/image/suika.png"];
       case "せ": return ["assets/image/seiza.png", "assets/image/semi.png"];
       case "そ": return ["assets/image/soujiki.png", "assets/image/softcream.png"];
@@ -123,7 +138,7 @@ class JaWordClass {
       case "と": return ["assets/image/tora.png", "assets/image/tomato.png"];
       case "な": return ["assets/image/natto.png", "assets/image/namazu.png"];
       case "に": return ["assets/image/niji.png", "assets/image/ninjin.png"];
-      case "ぬ": return ["assets/image/nuigurumi.png", "assets/image/nunomask.png"];
+      case "ぬ": return ["assets/image/nuigurumi.png", "assets/image/inu.png"];
       case "ね": return ["assets/image/neko.png", "assets/image/negi.png"];
       case "の": return ["assets/image/norimaki.png", "assets/image/note.png"];
       case "は": return ["assets/image/hasami.png", "assets/image/hamberger.png"];
@@ -170,6 +185,23 @@ class JaWordClass {
       case "ぷ": return ["assets/image/pudding.png", "assets/image/present.png"];
       case "ぺ": return ["assets/image/penguin.png", "assets/image/petbuttle.png"];
       case "ぽ": return ["assets/image/pot.png", "assets/image/potatochips.png"];
+      case "きゃ": return ["assets/image/kyabetsu.png", "assets/image/campfire.png"];
+      case "きゅ": return ["assets/image/kyukyusha.png", "assets/image/kyuri.png"];
+      case "きょ": return ["assets/image/kyokai.png", "assets/image/kyoryu.png"];
+      case "しゃ": return ["assets/image/shachi.png", "assets/image/shirt.png"];
+      case "しゅ": return ["assets/image/shuriken.png", "assets/image/shumai.png"];
+      case "しょ": return ["assets/image/shokupan.png", "assets/image/shoppingmall.png"];
+      case "ちゃ": return ["assets/image/akachan.png", "assets/image/gachagacha.png"];
+      case "ちゅ": return ["assets/image/chusha.png", "assets/image/turip.png"];
+      case "ちょ": return ["assets/image/chocho.png", "assets/image/chocolate.png"];
+      case "ひょ": return ["assets/image/hyotan.png", "assets/image/hyo.png"];
+      case "りゅ": return ["assets/image/ryu.png", "assets/image/ruck.png"];
+      case "ぎゅ": return ["assets/image/gyudon.png", "assets/image/figureskate.png"];
+      case "ぎょ": return ["assets/image/kingyo.png", "assets/image/gyoza.png"];
+      case "じゃ": return ["assets/image/jaguchi.png", "assets/image/jagaimo.png"];
+      case "じゅ": return ["assets/image/momijimanjyu.png", "assets/image/juice.png"];
+      case "じょ": return ["assets/image/jyokikikansha.png", "assets/image/jyouro.png"];
+      case "びょ": return ["assets/image/byoin.png", "assets/image/gabyo.png"];
       default: return ["", ""];
     }
   }

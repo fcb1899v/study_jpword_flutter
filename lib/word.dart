@@ -26,8 +26,9 @@ class WordClass {
     }
   }
 
+  // ignore: non_constant_identifier_names
   Widget AppBarTitle(){
-    return Text('たのしくまなぶ　ひらがな　カタカナ',
+    return Text('たのしくまなぶ・ひらがな・カタカナ',
       style: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
