@@ -4,12 +4,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="たのしくまなぶ・ひらがな・カタカナ"
         android:icon="@mipmap/ic_launcher">
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--            android:value="ca-app-pub-1585283309075901~9894151798"-->
-<!--        <key>GADApplicationIdentifier</key>-->
-<!--        <string>ca-app-pub-1585283309075901~9511008417</string>-->
-
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1585283309075901~6084996191"
         />
         <activity
             android:name=".MainActivity"

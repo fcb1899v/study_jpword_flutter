@@ -6,13 +6,13 @@ import 'dart:ui';
 import 'list.dart';
 import 'jaword.dart';
 import 'word.dart';
-//import 'admob.dart';
-//import 'package:admob_flutter/admob_flutter.dart';
+import 'admob.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //Admob.initialize();
+  Admob.initialize();
   //向き指定
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,//縦固定
@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage> {
   initTts() {
     fluttertts = FlutterTts();
     fluttertts.setLanguage("ja-JP");
-    //fluttertts.setVoice({"name": "Google 日本語", "locale": "ja-JP"});
+    fluttertts.setVoice({"name": "Google 日本語", "locale": "ja-JP"});
   }
 
   _speak(msg) {
@@ -92,7 +92,7 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            //adMobWidget(),
+            adMobWidget(),
             Spacer(flex: 3),
             Row(
               children: <Widget>[
@@ -149,16 +149,16 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  // Widget adMobWidget() {
-  //   return AdmobBanner(
-  //     adUnitId: AdMobService().getBannerAdUnitId(),
-  //     adSize: AdmobBannerSize(
-  //       width: MediaQuery.of(context).size.width.toInt(),
-  //       height: AdMobService().getHeight(context).toInt(),
-  //       name: 'SMART_BANNER',
-  //     ),
-  //   );
-  // }
+  Widget adMobWidget() {
+    return AdmobBanner(
+      adUnitId: AdMobService().getBannerAdUnitId(),
+      adSize: AdmobBannerSize(
+        width: MediaQuery.of(context).size.width.toInt(),
+        height: AdMobService().getHeight(context).toInt(),
+        name: 'SMART_BANNER',
+      ),
+    );
+  }
 
   Widget setHiraganaChar(index) {
     final size = MediaQuery.of(context).size;
