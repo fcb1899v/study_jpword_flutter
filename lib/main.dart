@@ -72,7 +72,6 @@ class _MainPageState extends State<MainPage> {
   initTts() {
     fluttertts = FlutterTts();
     fluttertts.setLanguage("ja-JP");
-    fluttertts.setVoice({"name": "Google 日本語", "locale": "ja-JP"});
   }
 
   _speak(msg) {
@@ -152,11 +151,12 @@ class _MainPageState extends State<MainPage> {
   Widget adMobWidget() {
     return AdmobBanner(
       adUnitId: AdMobService().getBannerAdUnitId(),
-      adSize: AdmobBannerSize(
-        width: MediaQuery.of(context).size.width.toInt(),
-        height: AdMobService().getHeight(context).toInt(),
-        name: 'SMART_BANNER',
-      ),
+      adSize: AdmobBannerSize.SMART_BANNER(context),
+      // adSize: AdmobBannerSize(
+      //   width: MediaQuery.of(context).size.width.toInt(),
+      //   height: AdMobService().getHeight(context).toInt(),
+      //   name: 'SMART_BANNER',
+      // ),
     );
   }
 
