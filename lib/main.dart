@@ -1,16 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:ui';
+import 'dart:io';
 import 'list.dart';
 import 'jaword.dart';
 import 'word.dart';
 import 'admob.dart';
 import 'package:admob_flutter/admob_flutter.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
