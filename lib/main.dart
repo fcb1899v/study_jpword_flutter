@@ -151,7 +151,11 @@ class _MainPageState extends State<MainPage> {
   Widget adMobWidget() {
     return AdmobBanner(
       adUnitId: AdMobService().getBannerAdUnitId(),
-      adSize: AdmobBannerSize.SMART_BANNER(context),
+      adSize: AdmobBannerSize(
+        width: MediaQuery.of(context).size.width.toInt(),
+        height: AdMobService().getHeight(context).toInt(),
+        name: 'SMART_BANNER',
+      ),
     );
   }
 
