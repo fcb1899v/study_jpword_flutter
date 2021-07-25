@@ -1,29 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
-class JaWordClass {
+extension StringExt on String {
 
-  // ignore: non_constant_identifier_names
-  jaWordDefault() {
-    return [
-      "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
-      "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
-      "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
-      "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り", "る", "れ", "ろ",
-      "わ", "ん", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ",
-      "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ",
-      "きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
-      // "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "みゃ", "みゅ", "みょ", "りゃ", "りょ", "ぎゃ",
-      "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
-      // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
-    ];
+  Future<void> speakText(BuildContext context) async {
+    FlutterTts flutterTts = FlutterTts();
+    flutterTts.setLanguage('ja-JP');
+    //flutterTts.setSpeechRate(0.5);
+    await flutterTts.stop();
+    await flutterTts.speak(this);
   }
 
-  String katakanaChar(String word) {
-    return word.replaceAllMapped(new RegExp("[ぁ-ゔ]"), (Match m) =>
-        String.fromCharCode(m.group(0).codeUnitAt(0) + 0x60));
+  String katakanaChar() {
+    return this.replaceAllMapped(new RegExp("[ぁ-ゔ]"), (Match m) =>
+        String.fromCharCode(m.group(0)!.codeUnitAt(0) + 0x60));
   }
 
-  jaWord(String word) {
-    switch (word) {
+  List<String> jaWord() {
+    switch (this) { //:6
       case "あ": return ["", "あ", "ひる", "", "ア", "イスクリーム"];
       case "い": return ["", "い", "ちご", "", "イ", "ルカ"];
       case "う": return ["", "う", "どん", "", "ウ", "サギ"];
@@ -114,8 +109,8 @@ class JaWordClass {
     }
   }
 
-  jaWordPicture(String word) {
-    switch (word) {
+  List<String> jaWordPicture() {
+    switch (this) {
       case "あ": return ["assets/image/ahiru.png", "assets/image/aisukurimu.png"];
       case "い": return ["assets/image/ichigo.png", "assets/image/iruka.png"];
       case "う": return ["assets/image/udon.png", "assets/image/usagi.png"];
@@ -206,3 +201,14 @@ class JaWordClass {
     }
   }
 }
+
+extension ListStringExt on List<String> {
+
+  List<String> wordSound() {
+    return [
+      "${this[0]}${this[1]}${this[2]}",
+      "${this[3]}${this[4]}${this[5]}"
+    ];
+  }
+}
+
