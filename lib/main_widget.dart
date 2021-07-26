@@ -24,16 +24,19 @@ extension DoubleExt on double {
   }
 }
 
-Widget appBarTitle() {
-  return FittedBox(
-    fit: BoxFit.fitWidth,
-    child: Text('たのしくまなぶ・ひらがな・カタカナ',
-      style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 25,
-      ),
-    )
+Widget appBarTitle(BuildContext context) {
+  return SizedBox(
+    width: MediaQuery.of(context).size.width - 100,
+    child: FittedBox(
+      fit: BoxFit.fitWidth,
+      child: Text('たのしくまなぶ・ひらがな・カタカナ',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
+        ),
+      )
+    ),
   );
 }
 

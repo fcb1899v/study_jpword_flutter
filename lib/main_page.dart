@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
           onPressed: () => Navigator.pop(context, true),
         ),
-        title: appBarTitle(),
+        title: appBarTitle(context),
         brightness: Brightness.dark,
         centerTitle: true,
       ),
