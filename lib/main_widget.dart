@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'jaword.dart';
+import 'ja_word.dart';
 
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {
