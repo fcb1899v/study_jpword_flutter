@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:jpword_app/jaword.dart';
 import 'main_widget.dart';
-import 'jaword.dart';
+import 'ja_word.dart';
 import 'admob.dart';
 
 class MainPage extends StatefulWidget {
