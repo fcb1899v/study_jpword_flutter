@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'main_widget.dart';
 import 'ja_word.dart';
-import 'admob.dart';
 import 'dart:io';
+import 'admob.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage(this.index);
