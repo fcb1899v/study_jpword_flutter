@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'ja_word.dart';
 
 class HexColor extends Color {
@@ -24,17 +25,16 @@ extension DoubleExt on double {
   }
 }
 
-Widget appBarTitle(BuildContext context) {
-  return SizedBox(
-    width: MediaQuery.of(context).size.width - 100,
-    child: FittedBox(
-      fit: BoxFit.fitWidth,
+Widget appBarTitle() {
+  return FittedBox(
+    child: Center(
       child: Text('たのしくまなぶ・ひらがな・カタカナ',
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 25,
+          fontSize: 18,
         ),
+        textAlign: TextAlign.start,
       )
     ),
   );
@@ -115,6 +115,5 @@ Widget customIcon(BuildContext context, IconData icon) {
     ),
   );
 }
-
 
 
