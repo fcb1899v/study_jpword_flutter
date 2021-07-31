@@ -40,8 +40,7 @@ class ListPageState extends State<ListPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: appBarTitle(context),
-          brightness: Brightness.dark,
+          title: appBarTitle(),
           backgroundColor: HexColor('ffa500'),
           centerTitle: true,
         ),

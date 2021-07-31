@@ -1,7 +1,7 @@
 name: jpword_app
 description: A new Flutter application.
 publish_to: 'none'
-version: 1.3.1+1.3.1
+version: 1.3.2+1.3.2
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -10,19 +10,18 @@ dependencies:
   flutter:
     sdk: flutter
   # Admob
-  admob_flutter: ^2.0.0-nullsafety.1
+  google_mobile_ads: ^0.13.2+1
   # Text to Speech
   flutter_tts: ^3.2.1
   # App Icon
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.9.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_native_splash: ^1.1.8
+  flutter_native_splash: ^1.2.0
 
 flutter:
-
   uses-material-design: true
   assets:
     - assets/image/
@@ -30,7 +29,9 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/appicon.png"
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "0077ff"
+  adaptive_icon_foreground: "assets/icon/appicon.png"
 
 flutter_native_splash:
   image: assets/icon/splush.png

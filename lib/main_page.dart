@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'main_widget.dart';
 import 'ja_word.dart';
 import 'admob.dart';
+import 'dart:io';
 
 class MainPage extends StatefulWidget {
   const MainPage(this.index);
@@ -19,6 +21,7 @@ class _MainPageState extends State<MainPage> {
   late List<String> word;
   late List<String> picture;
   late List<String> sound;
+  late BannerAd myBanner;
 
   @override
   void initState() {
@@ -34,14 +37,18 @@ class _MainPageState extends State<MainPage> {
         "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
         "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", "きゃ", "きゅ", "きょ",
         "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
-        // "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "みゃ", "みゅ", 
-        // "みょ", "りゃ", "りょ", "ぎゃ",
         "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
+        // "にゃ" : "こんにゃく", "にゅ" : "ぎゅうにゅう", "にょ" : "",
+        // "ひゃ" : "ひゃくえん", "ひゅ",
+        // "みゃ", "みゅ", "みょ" : "みょうが",
+        // "りゃ", "りょ", "ぎゃ",
         // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
       ];
       word = jaWordList[index].jaWord();
       picture = jaWordList[index].jaWordPicture();
       sound = word.wordSound();
+      print("${jaWordList[index]}, $word");
+      if (Platform.isAndroid) myBanner = AdmobService().getBannerAd()!;
     });
   }
 
@@ -53,23 +60,19 @@ class _MainPageState extends State<MainPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
           onPressed: () => Navigator.pop(context, true),
         ),
-        title: appBarTitle(context),
-        brightness: Brightness.dark,
+        title: appBarTitle(),
         centerTitle: true,
       ),
-      body: Center(
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Spacer(),
             jaWords(),
             Spacer(),
-            Spacer(),
             operationButtons(),
             Spacer(),
-            Spacer(),
-            adMobWidget(context),
-            Spacer(),
+            if (Platform.isAndroid) adMobWidget(context, myBanner),
           ],
         ),
       ),
@@ -169,15 +172,17 @@ class _MainPageState extends State<MainPage> {
           "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
           "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", "きゃ", "きゅ", "きょ",
           "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
-          // "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "みゃ", "みゅ",
-          // "みょ", "りゃ", "りょ", "ぎゃ",
           "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
+          // "にゃ" : "こんにゃく", "にゅ" : "ぎゅうにゅう", "にょ" : "",
+          // "ひゃ" : "ひゃくえん", "ひゅ",
+          // "みゃ", "みゅ", "みょ" : "みょうが",
+          // "りゃ", "りょ", "ぎゃ",
           // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
         ];
-        print("${jaWordList[index]}");
         word = jaWordList[index].jaWord();
         picture = jaWordList[index].jaWordPicture();
         sound = word.wordSound();
+        print("${jaWordList[index]}, $word");
       }),
       style: elevatedButtonStyle(HexColor('ffa500'), 20),
       child: customIcon(context, Icons.keyboard_return),
@@ -189,10 +194,10 @@ class _MainPageState extends State<MainPage> {
       onPressed: (){
         setState(() {
           jaWordList.shuffle();
-          print("${jaWordList[index]}");
           word = jaWordList[index].jaWord();
           picture = jaWordList[index].jaWordPicture();
           sound = word.wordSound();
+          print("${jaWordList[index]}, $word");
         });
       },
       style: elevatedButtonStyle(HexColor('ffa500'), 20),
@@ -206,10 +211,10 @@ class _MainPageState extends State<MainPage> {
         setState(() {
           jaWordList.insert(0, jaWordList[jaWordList.length - 1]);
           jaWordList.removeAt(jaWordList.length - 1);
-          print("${jaWordList[index]}");
           word = jaWordList[index].jaWord();
           picture = jaWordList[index].jaWordPicture();
           sound = word.wordSound();
+          print("${jaWordList[index]}, $word");
         });
       },
       style: elevatedButtonStyle(HexColor('ffa500'), 20),
@@ -223,10 +228,10 @@ class _MainPageState extends State<MainPage> {
         setState(() {
           jaWordList.insert(jaWordList.length, jaWordList[0]);
           jaWordList.removeAt(0);
-          print("${jaWordList[index]}");
           word = jaWordList[index].jaWord();
           picture = jaWordList[index].jaWordPicture();
           sound = word.wordSound();
+          print("${jaWordList[index]}, $word");
         });
       },
       style: elevatedButtonStyle(HexColor('ffa500'), 20),

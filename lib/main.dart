@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:admob_flutter/admob_flutter.dart';
+// import 'package:admob_flutter/admob_flutter.dart';
 import 'list_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Admob.initialize();
+  // Admob.initialize();
   //向き指定
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,//縦固定
