@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'main_widget.dart';
-import 'ja_word.dart';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:jpword_app/constant.dart';
+import 'main_widget.dart';
+import 'extension.dart';
 import 'admob.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,226 +17,210 @@ class _MainPageState extends State<MainPage> {
   int index;
   _MainPageState(this.index);
 
+  late double width;
+  late double height;
   late List<String> jaWordList;
+  late String char;
   late List<String> word;
   late List<String> picture;
   late List<String> sound;
-  late BannerAd myBanner;
+  late BannerAd? myBanner;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      jaWordList = [
-        "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
-        "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
-        "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
-        "ま", "み", "む", "め", "も", "や", "ゆ", "よ",
-        "ら", "り", "る", "れ", "ろ", "わ", "ん",
-        "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ",
-        "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
-        "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", "きゃ", "きゅ", "きょ",
-        "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
-        "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
-        // "にゃ" : "こんにゃく", "にゅ" : "ぎゅうにゅう", "にょ" : "",
-        // "ひゃ" : "ひゃくえん", "ひゅ",
-        // "みゃ", "みゅ", "みょ" : "みょうが",
-        // "りゃ", "りょ", "ぎゃ",
-        // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
-      ];
-      word = jaWordList[index].jaWord();
-      picture = jaWordList[index].jaWordPicture();
-      sound = word.wordSound();
-      print("${jaWordList[index]}, $word");
       if (Platform.isAndroid) myBanner = AdmobService().getBannerAd()!;
     });
+    _setReturn();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
-          onPressed: () => Navigator.pop(context, true),
+  void didChangeDependencies() {
+    "call didChangeDependencies".debugPrint();
+    super.didChangeDependencies();
+    setState((){
+      width = MediaQuery.of(context).size.width;
+      height = MediaQuery.of(context).size.height;
+    });
+    "width: $width, height: $height".debugPrint();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    "call didUpdateWidget".debugPrint();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void deactivate() {
+    "call deactivate".debugPrint();
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    "call dispose".debugPrint();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: whiteColor),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+          title: Image.asset(appBarImage, width: width.appBarWidth()),
+          centerTitle: true,
         ),
-        title: appBarTitle(),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Column(
+        body: Container(
+          padding: mainPadding(width),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Spacer(flex: 1),
+              Row(children: [
+                jaWord(0),
+                Spacer(),
+                jaWord(1),
+              ]),
+              SizedBox(height: width * wordSpaceRate),
+              operationButtons(),
+              Spacer(flex: 2),
+              if (Platform.isAndroid) adMobWidget(context, myBanner!),
+            ],
+          ),
+        ),
+      );
+
+  Widget jaWord(int num) =>
+      SizedBox(
+        width: width * wordWidthRate,
+        child: Column(children: [
+          charView(width, jaWordList[index], num),
+          SizedBox(height: width * wordSpaceRate),
+          wordButton(num),
+          SizedBox(height: width * wordSpaceRate),
+          pictureButton(num),
+          SizedBox(height: width * wordSpaceRate),
+          audioButton(num),
+        ]),
+      );
+
+  TextButton wordButton(int num) =>
+      TextButton(
+        onPressed: () => sound[num].speakText(context),
+        child: wordView(width, word, num),
+      );
+
+  TextButton pictureButton(int num) =>
+      TextButton(
+        onPressed: () => sound[num].speakText(context),
+        child: pictureView(width, picture[num]),
+      );
+
+  ElevatedButton audioButton(int num) =>
+      ElevatedButton(
+          onPressed: () => sound[num].speakText(context),
+          style: audioButtonStyle(),
+          child: audioIcon(width)
+      );
+
+  Widget operationButtons() =>
+      SizedBox(
+        width: width,
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            jaWords(),
-            Spacer(),
-            operationButtons(),
-            Spacer(),
-            if (Platform.isAndroid) adMobWidget(context, myBanner),
-          ],
+          children: [
+            returnButton(),
+            Spacer(), shuffleButton(),
+            Spacer(), backButton(),
+            Spacer(), forwardButton(),
+          ]
         ),
-      ),
-    );
+      );
+
+  ElevatedButton returnButton() =>
+      ElevatedButton(
+        onPressed: () => _setReturn(),
+        style: operationButtonStyle(),
+        child: operationIcon(width, Icons.keyboard_return)
+      );
+
+  ElevatedButton shuffleButton() =>
+      ElevatedButton(
+        onPressed: () => _setShuffle(),
+        style: operationButtonStyle(),
+        child: operationIcon(width, Icons.shuffle)
+      );
+
+  ElevatedButton backButton() =>
+      ElevatedButton(
+        onPressed: () => _setBack(),
+        style: operationButtonStyle(),
+        child: operationIcon(width, Icons.arrow_back)
+      );
+
+  ElevatedButton forwardButton() =>
+      ElevatedButton(
+        onPressed: () => _setForward(),
+        style: operationButtonStyle(),
+        child: operationIcon(width, Icons.arrow_forward)
+      );
+
+  _setReturn() {
+    setState(() => jaWordList = [
+      "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
+      "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
+      "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
+      "ま", "み", "む", "め", "も", "や", "ゆ", "よ",
+      "ら", "り", "る", "れ", "ろ", "わ", "ん",
+      "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ",
+      "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
+      "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", "きゃ", "きゅ", "きょ",
+      "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
+      "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
+      // "にゃ" : "こんにゃく", "にゅ" : "ぎゅうにゅう", "にょ" : "",
+      // "ひゃ" : "ひゃくえん", "ひゅ",
+      // "みゃ", "みゅ", "みょ" : "みょうが",
+      // "りゃ", "りょ", "ぎゃ",
+      // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
+    ]);
+    _setNewWord();
   }
 
-  Widget operationButtons() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: <Widget>[
-          Spacer(),
-          returnButton(),
-          Spacer(),
-          shuffleButton(jaWordList),
-          Spacer(),
-          backButton(jaWordList),
-          Spacer(),
-          forwardButton(jaWordList),
-          Spacer(),
-        ]
-      ),
-    );
+  _setShuffle() {
+    setState(() => jaWordList.shuffle());
+    _setNewWord();
   }
 
-  Widget jaWords() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: <Widget>[
-          Spacer(),
-          jaWordSet(0),
-          Spacer(),
-          (word[4] == "") ? SizedBox.shrink(): jaWordSet(1),
-          Spacer(),
-        ]
-      ),
-    );
+  _setBack() {
+    setState(() {
+      jaWordList.insert(0, jaWordList[jaWordList.length - 1]);
+      jaWordList.removeAt(jaWordList.length - 1);
+    });
+    _setNewWord();
   }
 
-  Widget jaWordSet(num) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      child: Column(
-        children: <Widget>[
-          jaChar(num),
-          SizedBox(height: 10),
-          jaWordUnit(num),
-          SizedBox(height: 10),
-          jaWordPicture(num),
-          SizedBox(height: 20),
-          jaWordSound(num),
-        ]
-      )
-    );
+  _setForward() {
+    setState(() {
+      jaWordList.insert(jaWordList.length, jaWordList[0]);
+      jaWordList.removeAt(0);
+    });
+    _setNewWord();
   }
 
-  Widget jaChar(int num){
-    return (word[4] == "") ? SizedBox.shrink(): TextButton(
-      child: jaCharView(jaWordList[index], num),
-      onPressed: () => sound[num].speakText(context),
-    );
+  _setNewWord() {
+    setState(() {
+      char = jaWordList[index];
+      word = jaWordList[index].jaWord();
+      picture = jaWordList[index].jaWordPicture();
+      sound = word.wordSound();
+    });
+    "$char, ${word.printWord()}".debugPrint();
   }
 
-  Widget jaWordUnit(int num){
-    return (word[4] == "") ? SizedBox.shrink(): TextButton(
-      child: jaWordView(word, num),
-      onPressed: () => sound[num].speakText(context),
-    );
-  }
-
-  Widget jaWordPicture(int num) {
-    return (word[4] == "") ? SizedBox.shrink(): TextButton(
-      onPressed: () => sound[num].speakText(context),
-      child: jaWordPictureView(context, picture, num),
-    );
-  }
-
-  Widget jaWordSound(int num) {
-    return (word[4] == "") ? SizedBox.shrink(): ElevatedButton(
-      onPressed: () => sound[num].speakText(context),
-      child: audioIcon(context),
-      style: elevatedButtonStyle(HexColor('0077ff'), 20),
-    );
-  }
-
-  Widget returnButton(){
-    return ElevatedButton(
-      onPressed: () => setState(() {
-        jaWordList = [
-          "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
-          "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
-          "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
-          "ま", "み", "む", "め", "も", "や", "ゆ", "よ",
-          "ら", "り", "る", "れ", "ろ", "わ", "ん",
-          "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ",
-          "だ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ",
-          "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", "きゃ", "きゅ", "きょ",
-          "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "ひょ", "りゅ",
-          "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びょ",
-          // "にゃ" : "こんにゃく", "にゅ" : "ぎゅうにゅう", "にょ" : "",
-          // "ひゃ" : "ひゃくえん", "ひゅ",
-          // "みゃ", "みゅ", "みょ" : "みょうが",
-          // "りゃ", "りょ", "ぎゃ",
-          // "びゃ", "びゅ", "ぴゃ", "ぴゅ", "ぴょ",
-        ];
-        word = jaWordList[index].jaWord();
-        picture = jaWordList[index].jaWordPicture();
-        sound = word.wordSound();
-        print("${jaWordList[index]}, $word");
-      }),
-      style: elevatedButtonStyle(HexColor('ffa500'), 20),
-      child: customIcon(context, Icons.keyboard_return),
-    );
-  }
-
-  Widget shuffleButton(List<String> charList){
-    return ElevatedButton(
-      onPressed: (){
-        setState(() {
-          jaWordList.shuffle();
-          word = jaWordList[index].jaWord();
-          picture = jaWordList[index].jaWordPicture();
-          sound = word.wordSound();
-          print("${jaWordList[index]}, $word");
-        });
-      },
-      style: elevatedButtonStyle(HexColor('ffa500'), 20),
-      child: customIcon(context, Icons.shuffle),
-    );
-  }
-
-  Widget backButton(List<String> charList){
-    return ElevatedButton(
-      onPressed: (){
-        setState(() {
-          jaWordList.insert(0, jaWordList[jaWordList.length - 1]);
-          jaWordList.removeAt(jaWordList.length - 1);
-          word = jaWordList[index].jaWord();
-          picture = jaWordList[index].jaWordPicture();
-          sound = word.wordSound();
-          print("${jaWordList[index]}, $word");
-        });
-      },
-      style: elevatedButtonStyle(HexColor('ffa500'), 20),
-      child: customIcon(context, Icons.arrow_back),
-    );
-  }
-
-  Widget forwardButton(List<String> charList){
-    return ElevatedButton(
-      onPressed: (){
-        setState(() {
-          jaWordList.insert(jaWordList.length, jaWordList[0]);
-          jaWordList.removeAt(0);
-          word = jaWordList[index].jaWord();
-          picture = jaWordList[index].jaWordPicture();
-          sound = word.wordSound();
-          print("${jaWordList[index]}, $word");
-        });
-      },
-      style: elevatedButtonStyle(HexColor('ffa500'), 20),
-      child: customIcon(context, Icons.arrow_forward),
-    );
-  }
 }
 

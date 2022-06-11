@@ -1,118 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'ja_word.dart';
+import 'constant.dart';
+import 'extension.dart';
 
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}
+EdgeInsets mainPadding(double width) =>
+    EdgeInsets.only(
+      left: width * mainPaddingRate,
+      right: width * mainPaddingRate,
+    );
 
-extension DoubleExt on double {
-
-  double picWidth() {
-    return (this < 620) ? this / 2 - 60: 250;
-  }
-
-  double picHeight() {
-    return (this < 620) ? this / 2 - 60: 250;
-  }
-}
-
-Widget appBarTitle() {
-  return FittedBox(
-    child: Center(
-      child: Text('たのしくまなぶ・ひらがな・カタカナ',
+Widget charView(double width, String char, int num) =>
+    Container(
+      alignment: Alignment.center,
+      height: width * charHeightRate,
+      child: Text((num == 0) ? char: char.katakanaChar(),
         style: TextStyle(
-          color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          color: Colors.black,
+          fontSize: width * char.char2SizeRate(),
         ),
-        textAlign: TextAlign.start,
       )
-    ),
-  );
-}
+    );
 
-Widget jaCharView(String char, int num) {
-  return SizedBox(
-    height: 150,
-    child: Text((num == 0) ? char: char.katakanaChar(),
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-        fontSize: (char.length == 1) ? 100: 70,
-      ),
-    ),
-  );
-}
-
-Widget jaWordView(List<String> word, int num){
-  return RichText(
-    text: TextSpan(
-      style: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-      ),
-      children: [
-        TextSpan(text: word[3 * num]),
-        TextSpan(text: word[3 * num + 1],
-          style: TextStyle(
-            color: HexColor('ffa500'),
-            decoration: TextDecoration.underline,
-          )
+Widget wordView(double width, List<String> word, int num) =>
+    RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: blackColor,
+          fontWeight: FontWeight.bold,
+          fontSize: width * wordSizeRate,
         ),
-        TextSpan(text: word[3 * num + 2]),
-      ],
-    )
-  );
-}
+        children: [
+          TextSpan(text: word[3 * num]),
+          TextSpan(text: word[3 * num + 1],
+            style: TextStyle(
+              color: yellowColor,
+              decoration: TextDecoration.underline,
+            )
+          ),
+          TextSpan(text: word[3 * num + 2]),
+        ],
+      )
+    );
 
-Widget jaWordPictureView(BuildContext context, List<String> picture, int num) {
-  return SizedBox(
-    width: MediaQuery.of(context).size.width.picWidth(),
-    height: MediaQuery.of(context).size.width.picHeight(),
-    child: Image.asset(picture[num]),
-  );
-}
+Widget pictureView(double width, String picture) =>
+    SizedBox(
+      width: width.picWidth(),
+      height: width.picHeight(),
+      child: Image.asset(picture),
+    );
 
-ButtonStyle elevatedButtonStyle(Color color, double radius) {
-  return ElevatedButton.styleFrom(
-    primary: color, //ボタンの背景色
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(radius),
+ButtonStyle audioButtonStyle() =>
+    ElevatedButton.styleFrom(
+      primary: blueColor, //ボタンの背景色
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(buttonRadius),
+        ),
       ),
-    ),
-  );
-}
+    );
 
-Widget audioIcon(BuildContext context){
-  return SizedBox(
-      width: MediaQuery.of(context).size.width / 2 - 60,
-      height: 50,
+Widget audioIcon(double width) =>
+    SizedBox(
+      width: width * audioButtonWidthRate,
+      height: buttonHeight,
       child: Icon(Icons.audiotrack,
-        color: Colors.white,
-        size: 30.0,
-      )
-  );
-}
+        color: whiteColor,
+        size: buttonIconSize,
+      ),
+    );
 
-Widget customIcon(BuildContext context, IconData icon) {
-  return SizedBox(
-    width: MediaQuery.of(context).size.width / 4 - 50,
-    height: 50,
-    child: Icon(icon,
-      color: Colors.white,
-      size: 30.0,
-    ),
-  );
-}
+Widget operationIcon(double width, IconData icon) =>
+    SizedBox(
+      width: width * operationButtonWidthRate,
+      height: buttonHeight,
+      child: Icon(icon,
+        color: whiteColor,
+        size: buttonIconSize,
+      ),
+    );
 
+ButtonStyle operationButtonStyle() =>
+    ElevatedButton.styleFrom(
+      primary: yellowColor, //ボタンの背景色
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(buttonRadius),
+        ),
+      ),
+    );
 
