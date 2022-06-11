@@ -15,7 +15,7 @@ Widget adMobWidget(BuildContext context, BannerAd myBanner) {
 class AdmobService {
   BannerAd? getBannerAd() {
     return BannerAd(
-      adUnitId: 'ca-app-pub-1585283309075901/7206506171',
+      adUnitId: "",
       size: AdSize(width: 320, height: 60,),
       request: AdRequest(),
       listener: BannerAdListener(
