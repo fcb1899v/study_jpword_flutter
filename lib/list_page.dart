@@ -80,7 +80,7 @@ class ListPageState extends State<ListPage> {
         decoration: BoxDecoration(color: blueColor),
         child:GridTile(
           child: TextButton(
-            child: Text(jaWordList[i],
+            child: Text(jaWordList[i].hiraganaAndKatakanaChar(),
               style: TextStyle(
                 color: whiteColor,
                 fontWeight: FontWeight.bold,

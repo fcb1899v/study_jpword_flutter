@@ -1,8 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+import 'constant.dart';
+
 extension StringExt on String {
+
+  void debugPrint() {
+    if (kDebugMode) print(this);
+  }
 
   Future<void> speakText(BuildContext context) async {
     FlutterTts flutterTts = FlutterTts();
@@ -12,10 +19,18 @@ extension StringExt on String {
     await flutterTts.speak(this);
   }
 
-  String katakanaChar() {
-    return this.replaceAllMapped(new RegExp("[ぁ-ゔ]"), (Match m) =>
-        String.fromCharCode(m.group(0)!.codeUnitAt(0) + 0x60));
-  }
+  String katakanaChar() =>
+      this.replaceAllMapped(
+        new RegExp("[ぁ-ゔ]"), (Match m) => String.fromCharCode(
+          m.group(0)!.codeUnitAt(0) + 0x60
+        )
+      );
+
+  String hiraganaAndKatakanaChar() =>
+      "$this\n${this.katakanaChar()}";
+
+  double char2SizeRate() =>
+      (this.length == 1) ? charSizeRate : charSizeRate * 0.7;
 
   List<String> jaWord() {
     switch (this) { //:6
@@ -204,11 +219,17 @@ extension StringExt on String {
 
 extension ListStringExt on List<String> {
 
-  List<String> wordSound() {
-    return [
-      "${this[0]}${this[1]}${this[2]}",
-      "${this[3]}${this[4]}${this[5]}"
-    ];
-  }
+  List<String> wordSound() =>
+      ["${this[0]}${this[1]}${this[2]}", "${this[3]}${this[4]}${this[5]}"];
+
+  String printWord() =>
+      "${this[0]}${this[1]}${this[2]}, ${this[3]}${this[4]}${this[5]}";
 }
 
+extension DoubleExt on double {
+
+  int listRowNumber() => this ~/ 100 + 1;
+  double appBarWidth() => (this < 620) ? this * appBarWidthRate: appBarMaxWidth;
+  double picWidth() => (this < 620) ? this / 2 - 60: picMaxWidth;
+  double picHeight() => (this < 620) ? this / 2 - 60: picMaxWidth;
+}
