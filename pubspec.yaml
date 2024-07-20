@@ -1,38 +1,51 @@
 name: jpword_app
 description: A new Flutter application.
 publish_to: 'none'
-version: 1.3.4+1.3.4
+version: 1.4.1+1.4.1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-
+  sdk: '>=2.18.0 <4.0.0'
+  flutter: '>=3.3.0'
 dependencies:
   flutter:
     sdk: flutter
-  # Firebase Analytics
-  firebase_core: ^1.17.1
-  firebase_analytics: ^9.1.9
-  # Admob
-  google_mobile_ads: ^1.2.0
-  # Text to Speech
-  flutter_tts: ^3.2.1
+
   # App Icon
-  flutter_launcher_icons: ^0.9.1
+  cupertino_icons: ^1.0.8
+  flutter_launcher_icons: ^0.13.1
+  # Firebase Analytics
+  firebase_core: ^3.2.0
+  firebase_analytics: ^11.2.0
+  # Admob
+  google_mobile_ads: ^5.1.0
+  # Text to Speech
+  flutter_tts: ^4.0.2
+  #env
+  flutter_dotenv: ^5.1.0
+  #MVVM
+  hooks_riverpod: ^2.5.1
+  flutter_hooks: ^0.20.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_native_splash: ^2.2.3
+  flutter_lints: ^4.0.0
+
+  # App Splash
+  flutter_native_splash: ^2.4.1
 
 flutter_native_splash:
-  image: "assets/icon/splush.png"
-  color: "0077ff"
+  image: "assets/icon/splash.png"
+  color: "#0077ff"
+  android_12:
+    image: "assets/icon/appIcon.png"
+    icon_background_color: "#0077ff"
 
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/icon/icon.png"
-  adaptive_icon_background: "0077ff"
+  adaptive_icon_background: "#0077ff"
   adaptive_icon_foreground: "assets/icon/appIcon.png"
 
 flutter:
@@ -40,6 +53,7 @@ flutter:
   assets:
     - assets/image/
     - assets/icon/
+    - assets/.env
   fonts:
     - family: sfPro
       fonts:
