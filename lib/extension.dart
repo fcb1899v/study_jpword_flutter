@@ -2,8 +2,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-
 import 'constant.dart';
+
+extension ContextExt on BuildContext {
+  ///Common
+  double width() => MediaQuery.of(this).size.width;
+  double height() => MediaQuery.of(this).size.height;
+
+  ///Size
+  double appBarHeight() => (width() < 600) ? width() * appBarHeightRate: appBarMaxHeight;
+  double appBarImageWidth() => (width() < 600) ? width() * appBarImageWidthRate: appBarImageMaxWidth;
+  double picWidth() => (width() < 600) ? width() / 2 - 60: picMaxWidth;
+  double picHeight() => (width() < 600) ? width() / 2 - 60: picMaxWidth;
+
+  ///List
+  int listRowNumber() => width() ~/ 100 + 1;
+
+  ///Admob
+  double admobHeight() => (height() < 600) ? 50: (height() < 1000) ? 50 + (height() - 600) / 8: 100;
+  double admobWidth() => width() - 100;
+}
 
 extension StringExt on String {
 
@@ -11,12 +29,9 @@ extension StringExt on String {
     if (kDebugMode) print(this);
   }
 
-  Future<void> speakText(BuildContext context) async {
-    FlutterTts flutterTts = FlutterTts();
-    flutterTts.setLanguage('ja-JP');
-    //flutterTts.setSpeechRate(0.5);
-    await flutterTts.stop();
+  Future<void> speakText(BuildContext context, FlutterTts flutterTts) async {
     await flutterTts.speak(this);
+    this.debugPrint();
   }
 
   String katakanaChar() =>
@@ -112,14 +127,18 @@ extension StringExt on String {
       case "ちゃ": return ["あか", "ちゃ", "ん", "ガチャガ", "チャ", ""];
       case "ちゅ": return ["", "ちゅ", "うしゃ", "", "チュ", "ーリップ"];
       case "ちょ": return ["", "ちょ", "うちょ", "", "チョ", "コレート"];
+      case "にゃ": return ["はん", "にゃ", "", "コン", "ニャ", "ク"];
+      case "にゅ": return ["ぎゅう", "にゅ", "う", "", "ニュ", "ース"];
+      case "にょ": return ["あみだ", "にょ", "らい", "ハラペー", "ニョ", ""];
+      case "ひゃ": return ["", "ひゃ", "くえん", "", "ヒャ", "クニチソウ"];
+      case "ひゅ": return ["", "ひゅ", "うがなつ", "", "ヒュ", "ドラ"];
       case "ひょ": return ["", "ひょ", "うたん", "", "ヒョ", "ウ"];
-      case "りゅ": return ["", "りゅ", "う", "", "リュ", "ック"];
+      case "ぎゃ": return ["", "ぎゃ", "くさいせい", "", "ギャ", "ング"];
       case "ぎゅ": return ["", "ぎゅ", "うどん", "フィ", "ギュ", "アスケート"];
       case "ぎょ": return ["きん", "ぎょ", "", "", "ギョ", "ーザ"];
       case "じゃ": return ["", "じゃ", "んけん", "", "ジャ", "ガイモ"];
       case "じゅ": return ["もみじまん", "じゅ", "う", "", "ジュ", "ース"];
       case "じょ": return ["", "じょ", "うききかんしゃ", "", "ジョ", "ウロ"];
-      case "びょ": return ["", "びょ", "ういん", "ガ", "ビョ", "ウ"];
       default: return ["","","", "","",""];
     }
   }
@@ -204,17 +223,27 @@ extension StringExt on String {
       case "ちゃ": return ["assets/image/akachan.png", "assets/image/gachagacha.png"];
       case "ちゅ": return ["assets/image/chusha.png", "assets/image/turip.png"];
       case "ちょ": return ["assets/image/chocho.png", "assets/image/chocolate.png"];
+      case "にゃ": return ["assets/image/hannya.png", "assets/image/konnyaku.png"];
+      case "にゅ": return ["assets/image/gyunyu.png", "assets/image/news.png"];
+      case "にょ": return ["assets/image/amidanyorai.png", "assets/image/harapenyo.png"];
+      case "ひゃ": return ["assets/image/hyakuen.png", "assets/image/hyakunichisou.png"];
+      case "ひゅ": return ["assets/image/hyuganatsu.png", "assets/image/hyudora.png"];
       case "ひょ": return ["assets/image/hyotan.png", "assets/image/hyo.png"];
-      case "りゅ": return ["assets/image/ryu.png", "assets/image/ruck.png"];
+      case "ぎゃ": return ["assets/image/gyakusaisei.png", "assets/image/gyangu.png"];
       case "ぎゅ": return ["assets/image/gyudon.png", "assets/image/figureskate.png"];
       case "ぎょ": return ["assets/image/kingyo.png", "assets/image/gyoza.png"];
       case "じゃ": return ["assets/image/janken.png", "assets/image/jagaimo.png"];
       case "じゅ": return ["assets/image/momijimanjyu.png", "assets/image/juice.png"];
       case "じょ": return ["assets/image/jyokikikansha.png", "assets/image/jyouro.png"];
-      case "びょ": return ["assets/image/byoin.png", "assets/image/gabyo.png"];
       default: return ["", ""];
     }
   }
+}
+
+extension IntExt on int {
+
+  int backNumber() => (this == 0) ? allJaWord.length - 1: this - 1;
+  int nextNumber() => (this == allJaWord.length - 1) ? 0: this + 1;
 }
 
 extension ListStringExt on List<String> {
@@ -223,13 +252,5 @@ extension ListStringExt on List<String> {
       ["${this[0]}${this[1]}${this[2]}", "${this[3]}${this[4]}${this[5]}"];
 
   String printWord() =>
-      "${this[0]}${this[1]}${this[2]}, ${this[3]}${this[4]}${this[5]}";
-}
-
-extension DoubleExt on double {
-
-  int listRowNumber() => this ~/ 100 + 1;
-  double appBarWidth() => (this < 620) ? this * appBarWidthRate: appBarMaxWidth;
-  double picWidth() => (this < 620) ? this / 2 - 60: picMaxWidth;
-  double picHeight() => (this < 620) ? this / 2 - 60: picMaxWidth;
+      "${wordSound()[0]}, ${wordSound()[1]}";
 }
