@@ -6,27 +6,12 @@ const myFont = "Hiragino";
 
 //Main Size
 const String appBarImage = "assets/icon/title_white.png";
-const double appBarHeightRate = 0.15;
-const double appBarMaxHeight = 90;
-const double appBarImageWidthRate = 0.8;
-const double appBarImageMaxWidth = 480;
-const double horizontalMarginRate = 0.05;
-const double wordWidthRate = 0.425;
-const double charSizeRate = 0.25;
-const double charHeightRate = 0.32;
-const double wordSizeRate = 0.04;
-const double wordSpaceRate = 0.04;
-const double picMaxWidth = 240;
-const double smallButtonWidthRate = 0.2;
-const double largeButtonWidthRate = 0.45;
-const double buttonHeight = 50;
-const double buttonIconSize = 30;
-const double buttonRadius = 30;
 
 //List Size
 const double listTopMargin = 10;
 const double listCharSize = 20;
 const double listMargin = 3;
+const double listPadding = 0;
 
 //JaWord
 const List<String> allJaWord = [
@@ -53,7 +38,6 @@ const List<String> allJaWord = [
   // "ぴゅ" : "",
   // "ぴょ" : "",
 ];
-final int numberJaWord = allJaWord.length;
 
 //Color
 const Color whiteColor = Colors.white;
@@ -72,12 +56,3 @@ class HexColor extends Color {
   }
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
-
-//Widget
-BoxShadow myShadow() => BoxShadow(
-  color: Colors.grey, //色
-  spreadRadius: 2,
-  blurRadius: 4,
-  offset: Offset(2, 2),
-);
-

@@ -5,22 +5,32 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'constant.dart';
 
 extension ContextExt on BuildContext {
+
   ///Common
   double width() => MediaQuery.of(this).size.width;
   double height() => MediaQuery.of(this).size.height;
 
   ///Size
-  double appBarHeight() => (width() < 600) ? width() * appBarHeightRate: appBarMaxHeight;
-  double appBarImageWidth() => (width() < 600) ? width() * appBarImageWidthRate: appBarImageMaxWidth;
-  double picWidth() => (width() < 600) ? width() / 2 - 60: picMaxWidth;
-  double picHeight() => (width() < 600) ? width() / 2 - 60: picMaxWidth;
+  double appBarImageWidth() => (width() < 600) ? width() * 0.8: 480;
+  double appBarHeight() => (width() < 600) ? width() * 0.15: 90;
+  double sideMargin() => height() * 0.005;
+  double picSize() => height() * 0.18;
+  double charHeight() => height() * 0.2;
+  double charSize(String char) => height() * ((char.length == 1) ? 0.12: 0.089);
+  double wordSize() => height() * 0.02;
+  double wordSpace() => height() * 0.04;
+  double buttonWidth() => height() * 0.08;
+  double buttonMargin() => height() * 0.02;
+  double buttonIconSize() => height() * 0.03;
+  double buttonHeight() => height() * 0.05;
+  double buttonRadius() => height() * 0.03;
 
   ///List
   int listRowNumber() => width() ~/ 100 + 1;
 
   ///Admob
   double admobHeight() => (height() < 600) ? 50: (height() < 1000) ? 50 + (height() - 600) / 8: 100;
-  double admobWidth() => width() - 100;
+  double admobWidth() => width();
 }
 
 extension StringExt on String {
@@ -36,16 +46,12 @@ extension StringExt on String {
 
   String katakanaChar() =>
       this.replaceAllMapped(
-        new RegExp("[ぁ-ゔ]"), (Match m) => String.fromCharCode(
-          m.group(0)!.codeUnitAt(0) + 0x60
-        )
+        new RegExp("[ぁ-ゔ]"), (Match m) =>
+          String.fromCharCode(m.group(0)!.codeUnitAt(0) + 0x60)
       );
 
   String hiraganaAndKatakanaChar() =>
       "$this\n${this.katakanaChar()}";
-
-  double char2SizeRate() =>
-      (this.length == 1) ? charSizeRate : charSizeRate * 0.7;
 
   List<String> jaWord() {
     switch (this) { //:6
@@ -244,12 +250,25 @@ extension IntExt on int {
 
   int backNumber() => (this == 0) ? allJaWord.length - 1: this - 1;
   int nextNumber() => (this == allJaWord.length - 1) ? 0: this + 1;
+  int getCounterValue(int i, int defaultValue) {
+    final int counter = (i == 2) ? backNumber(): (i == 3) ? nextNumber(): defaultValue;
+    "Counter: ${counter}".debugPrint();
+    return counter;
+  }
 }
 
 extension ListStringExt on List<String> {
 
   List<String> wordSound() =>
       ["${this[0]}${this[1]}${this[2]}", "${this[3]}${this[4]}${this[5]}"];
+
+  List<String> getJaWordListValue(int i) {
+    final List<String> list = List<String>.from(allJaWord);
+    if (i == 1) list.shuffle();
+    final List<String> jaWordList = (i == 0) ? allJaWord: (i == 1) ? list: this;
+    if (i == 0 || i == 1) "jaWordList: $jaWordList".debugPrint();
+    return jaWordList;
+  }
 
   String printWord() =>
       "${wordSound()[0]}, ${wordSound()[1]}";

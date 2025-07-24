@@ -1,7 +1,7 @@
 name: jpword_app
 description: A new Flutter application.
 publish_to: 'none'
-version: 1.4.1+1.4.1
+version: 1.4.2+1.4.2
 
 environment:
   sdk: '>=2.18.0 <4.0.0'
@@ -14,10 +14,11 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_launcher_icons: ^0.13.1
   # Firebase Analytics
-  firebase_core: ^3.2.0
-  firebase_analytics: ^11.2.0
+  firebase_core: ^3.3.0
+  firebase_analytics: ^11.2.1
   # Admob
   google_mobile_ads: ^5.1.0
+  app_tracking_transparency: ^2.0.6
   # Text to Speech
   flutter_tts: ^4.0.2
   #env
