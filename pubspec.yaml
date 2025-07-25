@@ -1,7 +1,7 @@
 name: jpword_app
 description: A new Flutter application.
 publish_to: 'none'
-version: 1.4.2+1.4.2
+version: 1.4.3+1.4.3
 
 environment:
   sdk: '>=2.18.0 <4.0.0'
@@ -12,28 +12,28 @@ dependencies:
 
   # App Icon
   cupertino_icons: ^1.0.8
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
   # Firebase Analytics
-  firebase_core: ^3.3.0
-  firebase_analytics: ^11.2.1
+  firebase_core: ^3.15.2
+  firebase_analytics: ^11.6.0
   # Admob
-  google_mobile_ads: ^5.1.0
-  app_tracking_transparency: ^2.0.6
+  google_mobile_ads: ^6.0.0
+  app_tracking_transparency: ^2.0.6+1
   # Text to Speech
-  flutter_tts: ^4.0.2
+  flutter_tts: ^4.2.3
   #env
-  flutter_dotenv: ^5.1.0
+  flutter_dotenv: ^5.2.1
   #MVVM
-  hooks_riverpod: ^2.5.1
-  flutter_hooks: ^0.20.5
+  hooks_riverpod: ^2.6.1
+  flutter_hooks: ^0.21.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
   # App Splash
-  flutter_native_splash: ^2.4.1
+  flutter_native_splash: ^2.4.6
 
 flutter_native_splash:
   image: "assets/icon/splash.png"

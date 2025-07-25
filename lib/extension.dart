@@ -6,11 +6,12 @@ import 'constant.dart';
 
 extension ContextExt on BuildContext {
 
-  ///Common
+  // Navigation
+  void popPage() => Navigator.pop(this);
+
+  // Responsive sizing methods based on screen dimensions
   double width() => MediaQuery.of(this).size.width;
   double height() => MediaQuery.of(this).size.height;
-
-  ///Size
   double appBarImageWidth() => (width() < 600) ? width() * 0.8: 480;
   double appBarHeight() => (width() < 600) ? width() * 0.15: 90;
   double sideMargin() => height() * 0.005;
@@ -24,13 +25,11 @@ extension ContextExt on BuildContext {
   double buttonIconSize() => height() * 0.03;
   double buttonHeight() => height() * 0.05;
   double buttonRadius() => height() * 0.03;
-
-  ///List
-  int listRowNumber() => width() ~/ 100 + 1;
-
-  ///Admob
   double admobHeight() => (height() < 600) ? 50: (height() < 1000) ? 50 + (height() - 600) / 8: 100;
   double admobWidth() => width();
+
+  // Grid layout for phonics list
+  int listRowNumber() => width() ~/ 100 + 1;
 }
 
 extension StringExt on String {

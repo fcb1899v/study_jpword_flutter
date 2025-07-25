@@ -1,4 +1,4 @@
-/// Study Phonics App - Text-to-Speech Manager
+/// Text-to-Speech Manager
 /// 
 /// Manages text-to-speech functionality for the phonics learning app.
 /// Handles voice selection, speech synthesis, and platform-specific configurations.
@@ -23,11 +23,11 @@ class TtsManager {
   // =============================================================================
 
   /// Default TTS locale for English (US)
-  static const String ttsLocale = "en-US";
+  static const String ttsLocale = "ja-JP";
   /// Android voice name for English language
-  static const String androidVoiceName = "en-US-language";
+  static const String androidVoiceName = "ja-JP-language";
   /// iOS voice name (Samantha is a high-quality English voice)
-  static const String iOSVoiceName = "Samantha";
+  static const String iOSVoiceName = "Kyoko";
   /// Platform-specific default voice name
   String defaultVoiceName = (Platform.isIOS || Platform.isMacOS) ? iOSVoiceName: androidVoiceName;
 
@@ -39,7 +39,7 @@ class TtsManager {
     final voices = await flutterTts.getVoices;
     // Filter for local female voices (iOS/macOS only)
     List<dynamic> localFemaleVoices = (Platform.isIOS || Platform.isMacOS) ? voices.where((voice) {
-      final isLocalMatch = voice['locale'].toString().contains("en-US");
+      final isLocalMatch = voice['locale'].toString().contains(ttsLocale);
       final isFemale = voice['gender'].toString().contains('female');
       return isLocalMatch && isFemale;
     }).toList(): [];
