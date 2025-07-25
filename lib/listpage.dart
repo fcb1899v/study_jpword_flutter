@@ -1,45 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'extension.dart';
 import 'constant.dart';
-import 'main_page.dart';
+import 'homepage.dart';
 
+/// List Page
+/// Main navigation page that displays all Japanese words in a grid layout
+/// Provides access to individual word learning pages
 class ListPage extends HookConsumerWidget {
-  const ListPage({Key? key}) : super(key: key);
+  ListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        ///App Tracking Transparency
-        // if (Platform.isIOS || Platform.isMacOS) {
-        //   final status = await AppTrackingTransparency.trackingAuthorizationStatus;
-        //   if (status == TrackingStatus.notDetermined && context.mounted) {
-        //     await AppTrackingTransparency.requestTrackingAuthorization();
-        //   }
-        // }
-      });
-      return null;
-    }, []);
+    // UI widget helper for consistent styling
+    final list = ListWidget(context);
 
     return Scaffold(
-      ///AppBar
-      appBar: AppBar(
-        title: Image.asset(appBarImage,
-          width: context.appBarImageWidth()
-        ),
-        backgroundColor: yellowColor,
-        centerTitle: true,
-      ),
-      ///Body
+      /// AppBar with title image
+      appBar: list.listAppBar(),
+      /// Body with grid layout of Japanese words
       body: Container(
         color: yellowColor,
         padding: EdgeInsets.all(listTopMargin),
         child: GridView.count(
+          // Configure grid layout with responsive column count
           crossAxisCount: context.listRowNumber(),
           crossAxisSpacing: listMargin,
           mainAxisSpacing: listMargin,
+          // Generate grid items for all Japanese words
           children: List.generate(allJaWord.length, (i) =>
             Container(
               alignment: Alignment.center,
@@ -47,6 +35,7 @@ class ListPage extends HookConsumerWidget {
               decoration: BoxDecoration(color: blueColor),
               child: GridTile(
                 child: TextButton(
+                  // Display hiragana and katakana characters
                   child: Text(allJaWord[i].hiraganaAndKatakanaChar(),
                     style: TextStyle(
                       color: whiteColor,
@@ -54,8 +43,9 @@ class ListPage extends HookConsumerWidget {
                       fontSize: listCharSize,
                     ),
                   ),
+                  // Navigate to HomePage with selected word index
                   onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MainPage(index: i))
+                    MaterialPageRoute(builder: (context) => HomePage(index: i))
                   ),
                 ),
               ),
@@ -65,4 +55,22 @@ class ListPage extends HookConsumerWidget {
       ),
     );
   }
+}
+
+/// Helper class for creating list page UI components
+/// Provides reusable widgets for the word selection interface
+class ListWidget {
+
+  /// Build context for accessing theme and navigation
+  final BuildContext context;
+  ListWidget(this.context);
+
+  /// Creates the app bar with title image and yellow background
+  AppBar listAppBar() => AppBar(
+    title: Image.asset(appBarImage,
+      width: context.appBarImageWidth()
+    ),
+    backgroundColor: yellowColor,
+    centerTitle: true,
+  );
 }
