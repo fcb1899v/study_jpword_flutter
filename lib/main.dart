@@ -6,24 +6,40 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'firebase_options.dart';
 import 'constant.dart';
-import 'listpage.dart';
+import 'list_page.dart';
 
 /// Application entry point
 /// Initializes Flutter, Firebase, AdMob, and environment variables
 /// Sets up the main application with proper configuration
 Future<void> main() async {
   // Ensure Flutter is initialized before proceeding
-  WidgetsFlutterBinding.ensureInitialized();
-  // Lock device orientation to portrait mode only
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // Configure system UI, orientation, and platform-specific styling
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  if (Platform.isAndroid) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ));
+  } else {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ));
+  }
   // Load environment variables from .env file
   await dotenv.load(fileName: "assets/.env");
   // Initialize Firebase for Android platform
   if (Platform.isAndroid) await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Start the application with Riverpod provider scope
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
   // Initialize Google Mobile Ads for Android platform
   if (Platform.isAndroid) MobileAds.instance.initialize();
 }

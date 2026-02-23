@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'extension.dart';
 import 'constant.dart';
 import 'homepage.dart';
@@ -14,6 +16,12 @@ class ListPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // UI widget helper for consistent styling
     final list = ListWidget(context);
+
+    // Initialized app
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) async => FlutterNativeSplash.remove());
+      return null;
+    }, []);
 
     return Scaffold(
       /// AppBar with title image
