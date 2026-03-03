@@ -1,7 +1,7 @@
 name: jpword_app
 description: A new Flutter application.
 publish_to: 'none'
-version: 1.4.4+144
+version: 1.4.5+145
 
 environment:
   sdk: '>=2.18.0 <4.0.0'
