@@ -63,12 +63,21 @@ cd study_jpword_flutter
 flutter pub get
 ```
 
-### 3. Environment Variables Setup
-Create `assets/.env` file and configure required environment variables:
-```env
-# Add any environment variables if needed
-# Currently using default configurations
-```
+### 3. Configuration Files Setup
+
+**Environment variables.** Copy `assets/.env_example` to `assets/.env` and fill
+in the values. The template lists every key with what it is for, and is the one
+place that list is maintained. `pubspec.yaml` declares `assets/.env`, so the
+file has to exist or the build fails. Debug builds use Google's demo ad units
+and need no real ids, and the demo unit for an inline adaptive request is not
+the same id as the fixed-size one.
+
+**Android signing, release only.** Copy `android/key.properties.example` to
+`android/key.properties` and fill it in. Nothing in it ships inside the app, and
+the two passwords are real secrets: together with the keystore they let anyone
+publish an update Play accepts as coming from you. Keep the keystore outside the
+repository and back both up. A release built without this file falls back to the
+debug signing config, which produces an artifact Play rejects.
 
 ### 4. Firebase Configuration
 1. Create a Firebase project
