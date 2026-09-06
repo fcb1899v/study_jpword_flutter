@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "685481109240",
+    "project_id": "jpword-app",
+    "storage_bucket": "jpword-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685481109240:android:1652a658190ffad859bd0d",
+        "android_client_info": {
+          "package_name": "com.nakajimamasao.studyjpword"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685481109240-ldj9vtab8f1hjkotlgdnvstdegp8fl21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpA7LPXoBZxj2QlTiI37XzOpGfLKAgE_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685481109240-ldj9vtab8f1hjkotlgdnvstdegp8fl21.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "685481109240-8vgvuhorok6ttp0b8uthrbd87o95jj5s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nakajimamasao.studyjpword",
+                "app_store_id": "1550720866"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

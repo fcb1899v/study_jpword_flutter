@@ -40,17 +40,17 @@ extension StringExt on String {
 
   Future<void> speakText(BuildContext context, FlutterTts flutterTts) async {
     await flutterTts.speak(this);
-    this.debugPrint();
+    debugPrint();
   }
 
   String katakanaChar() =>
-      this.replaceAllMapped(
-        new RegExp("[ぁ-ゔ]"), (Match m) =>
+      replaceAllMapped(
+        RegExp("[ぁ-ゔ]"), (Match m) =>
           String.fromCharCode(m.group(0)!.codeUnitAt(0) + 0x60)
       );
 
   String hiraganaAndKatakanaChar() =>
-      "$this\n${this.katakanaChar()}";
+      "$this\n${katakanaChar()}";
 
   List<String> jaWord() {
     switch (this) { //:6
@@ -265,7 +265,7 @@ extension IntExt on int {
   int nextNumber() => (this == allJaWord.length - 1) ? 0: this + 1;
   int getCounterValue(int i, int defaultValue) {
     final int counter = (i == 2) ? backNumber(): (i == 3) ? nextNumber(): defaultValue;
-    "Counter: ${counter}".debugPrint();
+    "Counter: $counter".debugPrint();
     return counter;
   }
 }

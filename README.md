@@ -44,8 +44,9 @@ It provides an engaging learning experience with text-to-speech, visual word ima
 
 ## 📋 Prerequisites
 
-- Flutter 3.3.0+
-- Dart 2.18.0+
+- Flutter 3.47.0+ (required by Android Gradle Plugin 9: earlier versions
+  force the Kotlin Gradle Plugin onto modules that AGP 9 compiles itself)
+- Dart 3.13.0+
 - Android Studio / Xcode
 - Firebase (Analytics)
 
@@ -73,17 +74,18 @@ Create `assets/.env` file and configure required environment variables:
 1. Create a Firebase project
 2. Place `google-services.json` (Android) in `android/app/`
 3. Place `GoogleService-Info.plist` (iOS) in `ios/Runner/`
-4. These files are automatically excluded by .gitignore
+4. These files are tracked here. The Gradle plugin fails the Android build
+   without the json, and the Xcode project lists the plist in its Resources
+   phase, so excluding them only broke fresh clones. They carry the same
+   identifiers as `lib/firebase_options.dart`, which ship inside the app.
+   Real secrets stay out: the keystore and the environment file
 
 ### 5. Run the Application
 ```bash
 # Android
 flutter run
 
-# iOS
-cd ios
-pod install
-cd ..
+# iOS (Swift Package Manager: there is no Podfile to install)
 flutter run
 ```
 
@@ -140,8 +142,15 @@ flutter analyze
 ```
 
 ### Run Tests
+
+There are none. The `flutter create` counter test was removed on 2026-09-02
+because it asserted on a widget this app does not have and could only ever fail,
+which made a red `flutter test` indistinguishable from a real failure.
+
+`flutter analyze` is the check that runs clean and is expected to stay that way.
+
 ```bash
-flutter test
+flutter analyze   # expected: No issues found!
 ```
 
 ### Build

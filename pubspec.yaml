@@ -4,36 +4,50 @@ publish_to: 'none'
 version: 1.4.5+145
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
-  flutter: '>=3.3.0'
+  # 3.47 is the floor, not 3.3: Android Gradle Plugin 9 rejects the Kotlin
+  # Gradle Plugin being applied on top, and Flutter forces it onto plugin
+  # modules until 3.47 adds the isBuiltInKotlinEnabled guard. Declaring 3.3
+  # let `pub get` succeed and the Android build fail later with an error
+  # that names neither.
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.47.0'
 dependencies:
   flutter:
     sdk: flutter
 
   # App Icon
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^1.0.9
   flutter_launcher_icons: ^0.14.4
   # Firebase Analytics
-  firebase_core: ^4.4.0
-  firebase_analytics: ^12.1.2
+  firebase_core: ^4.14.0
+  firebase_analytics: ^12.5.0
   # Admob
-  google_mobile_ads: ^7.0.0
-  app_tracking_transparency: ^2.0.6+1
+  google_mobile_ads: ^9.1.0
   # Text to Speech
-  flutter_tts: ^4.2.5
+  # Fork of pub.dev flutter_tts 4.2.5. Upstream has no Swift Package Manager
+  # support and its last commit was 2026-01-05, so waiting for it would keep
+  # CocoaPods in the iOS build. Changes from the published 4.2.5:
+  #   ios/flutter_tts/, macos/flutter_tts/   SPM manifests, added
+  #   android/build.gradle                   branch on android.builtInKotlin so
+  #                                          AGP 9 compiles the Kotlin itself
+  #   example/, gen/, test/                  removed; not needed to build
+  # The Dart sources are unchanged. `diff -rq` against the pub-cache copy shows
+  # exactly the five entries above.
+  flutter_tts:
+    path: packages/flutter_tts
   #env
-  flutter_dotenv: ^6.0.0
+  flutter_dotenv: ^6.0.1
   #MVVM
-  hooks_riverpod: ^3.2.1
+  hooks_riverpod: ^3.4.3
   flutter_hooks: ^0.21.3+1
 
+  # Used at runtime in lib/ (preserve / remove), not only as a generator,
+  # so it belongs in dependencies. Same version as the other apps.
+  flutter_native_splash: ^2.4.8
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-
-  # App Splash
-  flutter_native_splash: ^2.4.7
 
 flutter_native_splash:
   image: "assets/icon/splash.png"

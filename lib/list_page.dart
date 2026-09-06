@@ -10,7 +10,7 @@ import 'homepage.dart';
 /// Main navigation page that displays all Japanese words in a grid layout
 /// Provides access to individual word learning pages
 class ListPage extends HookConsumerWidget {
-  ListPage({super.key});
+  const ListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

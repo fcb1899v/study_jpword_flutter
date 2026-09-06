@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- AdMob reads the advertising id and no plugin declares this. Without it
+         Android 13 and later withhold the id, which quietly limits personalized
+         ads; nothing errors. The other six apps that show ads all declare it. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <application
         android:label="@string/app_name"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -18,10 +23,9 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-            <meta-data
-                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/launch_background"
-                />
+            <!-- No SplashScreenDrawable: the v2 embedding ignores it. There is
+                 no reference to it left in flutter_tools, the framework or the
+                 Gradle plugin. flutter_native_splash handles this now. -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

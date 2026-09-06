@@ -7,7 +7,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'firebase_options.dart';
 import 'constant.dart';
 import 'list_page.dart';
 
@@ -36,18 +35,29 @@ Future<void> main() async {
   }
   // Load environment variables from .env file
   await dotenv.load(fileName: "assets/.env");
-  // Initialize Firebase for Android platform
-  if (Platform.isAndroid) await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // No options: Android auto-initializes [DEFAULT] from google-services.json
+  // before main runs, and passing options that differ from it throws
+  // duplicate-app. Analytics attaches to that same native default app
+  if (Platform.isAndroid) await Firebase.initializeApp();
   // Start the application with Riverpod provider scope
   runApp(const ProviderScope(child: MyApp()));
   // Initialize Google Mobile Ads for Android platform
+  // Android only: no ad is requested on iOS. homepage.dart shows a plain
+  // SizedBox there instead of AdBannerWidget, and initialize() is gated below,
+  // so nothing on iOS ever reaches the ads SDK.
+  //
+  // Info.plist still carries GADApplicationIdentifier and it names this app's
+  // own AdMob iOS app, which is registered and has a store id. The key cannot
+  // be dropped while the plugin is linked, and naming Google's sample app there
+  // would put another publisher's id in a shipping build for no gain. Setting
+  // it correctly requests no ads; the gates below decide that.
   if (Platform.isAndroid) MobileAds.instance.initialize();
 }
 
 /// Main application widget
 /// Configures the MaterialApp with theme, navigation, and analytics
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
   
   @override
   Widget build(BuildContext context) {

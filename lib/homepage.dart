@@ -13,7 +13,7 @@ import 'admob_banner.dart';
 class HomePage extends HookConsumerWidget {
   /// Initial index for displaying the first word
   final int index;
-  HomePage({required this.index});
+  const HomePage({super.key, required this.index});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -129,7 +129,7 @@ class HomeWidget {
   /// @param char The Japanese character to display
   /// @param index Index for character selection (1=katakana, others=hiragana)
   /// @param onTap Callback function when button is tapped
-  charButton(String char, {
+  GestureDetector charButton(String char, {
     required int index,
     required void Function() onTap,
   }) => GestureDetector(
@@ -152,7 +152,7 @@ class HomeWidget {
   /// Creates word widget with highlighted Japanese word parts
   /// @param word List of word parts [prefix, sound, suffix]
   /// @param index Index for word selection
-  wordWidget(List<String> word, {
+  Container wordWidget(List<String> word, {
     required int index
   }) => Container(
     alignment: Alignment.center,
@@ -179,7 +179,7 @@ class HomeWidget {
 
   /// Creates image container for Japanese word illustration
   /// @param picture Asset path for the image
-  pictureImage(String picture) =>  Container(
+  Container pictureImage(String picture) =>  Container(
     alignment: Alignment.center,
     width: context.picSize(),
     height: context.picSize(),
@@ -188,7 +188,7 @@ class HomeWidget {
   );
 
   /// Creates audio button with play icon for TTS functionality
-  audioButtonImage() => Container(
+  Container audioButtonImage() => Container(
     width: context.picSize(),
     height: context.buttonHeight(),
     margin: EdgeInsets.only(bottom: context.wordSpace()),

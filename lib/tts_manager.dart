@@ -1,7 +1,7 @@
-/// Text-to-Speech Manager
-/// 
-/// Manages text-to-speech functionality for the phonics learning app.
-/// Handles voice selection, speech synthesis, and platform-specific configurations.
+// Text-to-Speech Manager
+//
+// Manages text-to-speech functionality for the phonics learning app.
+// Handles voice selection, speech synthesis, and platform-specific configurations.
 
 import 'dart:io';
 import 'package:flutter/material.dart';

@@ -77,6 +77,7 @@ app.*.map.json
 **/ios/**/xcuserdata
 **/ios/.generated/
 **/ios/Flutter/App.framework
+**/ios/Flutter/ephemeral/
 **/ios/Flutter/Flutter.framework
 **/ios/Flutter/Flutter.podspec
 **/ios/Flutter/Generated.xcconfig
@@ -101,9 +102,12 @@ coverage/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# Firebase
-google-services.json
-GoogleService-Info.plist
+# Not google-services.json / GoogleService-Info.plist: this app applies the
+# com.google.gms.google-services Gradle plugin, which fails the Android build
+# when the json is absent, and six of the eight Xcode projects list the plist in
+# their Resources build phase. Both files hold the same identifiers as
+# lib/firebase_options.dart and ship inside the app, so excluding them hid
+# nothing and cost two apps their copy (kawaii and letswashlet, 2026-09-02).
 firebase_app_id_file.json
 
 # Environment files
@@ -115,3 +119,26 @@ firebase_app_id_file.json
 # Generated files
 *.g.dart
 *.freezed.dart
+
+# Build output. ios/build/ in particular: the other six apps hide it and these
+# two did not, which left 29 XCBuildData files untracked and un-ignored.
+/build/
+ios/build/
+
+# Workspace tooling, not part of this app. Six of the other repos already
+# hide it; keeping one set of rules means the same review applies everywhere.
+.claude/
+.cursorignore
+
+# --- Signing assets (added 2026-09-06) ---
+# None of these are in any repository today. The rules exist so that a
+# certificate exported to the project directory for a one-off cannot be
+# committed by a later `git add -A`. Distribution certificates and the App
+# Store Connect key grant publishing rights, and a leak is not fixed by
+# deleting the file: the history keeps it.
+*.p12
+*.p8
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
