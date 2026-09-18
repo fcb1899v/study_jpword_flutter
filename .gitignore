@@ -118,6 +118,11 @@ ios/Runner/GoogleService-Info.plist
 # Google through the secret scanning partner program, and the project was suspended
 # two days later. Run `flutterfire configure` after a fresh clone to regenerate it.
 lib/firebase_options.dart
+
+# Anything regenerable stays out (2026-09-19). `flutterfire configure` and the
+# Firebase console write these back, so tracking them only publishes the
+# project identifiers into a repository that is scanned automatically.
+firebase.json
 firebase_app_id_file.json
 
 # Environment files
