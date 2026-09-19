@@ -70,14 +70,8 @@ flutter:
     - assets/icon/
     - assets/.env
   fonts:
-    - family: sfPro
-      fonts:
-        - asset: assets/fonts/SF-Pro.ttf
     - family: Hiragino
       fonts:
         - asset: assets/fonts/hiraginokakugothicw3.ttc
-    - family: Kodomo
-      fonts:
-        - asset: assets/fonts/KodomoRounded-Light.otf
 
 
