@@ -10,45 +10,47 @@
 
 ## 📱 Application Overview
 
-JPWord is a Flutter-based educational app for Android & iOS that helps users learn Japanese Hiragana, Katakana, and vocabulary through interactive exercises.
-It provides an engaging learning experience with text-to-speech, visual word images, and a comprehensive kana/word library.
+JPWord is a Flutter app for Android & iOS that teaches Japanese Hiragana, Katakana, and vocabulary.
+Each kana opens a page with a word, its image, and text-to-speech playback.
 
 ### 🎯 Key Features
 
-- **Comprehensive Kana Coverage**: All basic Hiragana and Katakana characters
-- **Word Learning**: 169+ Japanese words with images and readings
-- **Text-to-Speech Integration**: High-quality Japanese voice pronunciation
-- **Cross-platform Support**: Android & iOS compatibility
-- **Interactive Learning**: Tap to hear sounds and practice pronunciation
-- **Visual Learning Aids**: Word images with clear typography
-- **Firebase Analytics**: Track learning progress and app usage
-- **AdMob Integration**: Banner ads for monetization
-- **Responsive Design**: Adapts to different screen sizes
-- **App Tracking Transparency**: iOS privacy compliance
+- **Kana Coverage**: 90 entries in `allJaWord` (`lib/constant.dart`), covering basic, voiced, semi-voiced, and combination kana
+- **Word Learning**: one Hiragana word and one Katakana word per kana, so `jaWordPicture()` in `lib/extension.dart` references 180 images out of the 206 files in `assets/image/`
+- **Text-to-Speech**: Japanese pronunciation through `flutter_tts`
+- **Cross-platform Support**: Android & iOS
+- **Interactive Learning**: Tap a kana or word to hear it
+- **Firebase Analytics**: Android only, gated by `Platform.isAndroid` in `lib/main.dart`
+- **AdMob Banner**: Android only, with the UMP consent flow in `lib/admob_banner.dart`
+- **Responsive Design**: Grid and type sizes derived from the screen size
 
 ## 🚀 Technology Stack
 
 ### Frameworks & Libraries
-- **Flutter**: 3.3.0+
-- **Dart**: 2.18.0+
-- **Firebase**: Analytics
-- **Google Mobile Ads**: Banner advertisement display
+- **Flutter**: 3.47.0+
+- **Dart**: 3.13.0+
+- **Firebase**: `firebase_core` and `firebase_analytics`, the only Firebase packages in `pubspec.yaml`, initialized on Android only
+- **Google Mobile Ads**: Banner ads and UMP consent (Android only)
 
 ### Core Features
-- **Text-to-Speech**: flutter_tts
+- **Text-to-Speech**: `flutter_tts`, vendored at `packages/flutter_tts`
 - **State Management**: hooks_riverpod, flutter_hooks
 - **Environment Variables**: flutter_dotenv
-- **App Tracking Transparency**: app_tracking_transparency
 - **App Icons**: flutter_launcher_icons
 - **Splash Screen**: flutter_native_splash
 
+### The flutter_tts fork is local on purpose
+
+`pubspec.yaml` points `flutter_tts` at `packages/flutter_tts`, not at pub.dev.
+The published 4.2.5 has no Swift Package Manager manifest, so depending on it would put CocoaPods back into the iOS build.
+The fork adds the SPM manifests and branches `android/build.gradle` on `android.builtInKotlin` for AGP 9; the Dart sources are unchanged.
+
 ## 📋 Prerequisites
 
-- Flutter 3.47.0+ (required by Android Gradle Plugin 9: earlier versions
-  force the Kotlin Gradle Plugin onto modules that AGP 9 compiles itself)
+- Flutter 3.47.0+ (required by Android Gradle Plugin 9: earlier versions force the Kotlin Gradle Plugin onto modules that AGP 9 compiles itself)
 - Dart 3.13.0+
 - Android Studio / Xcode
-- Firebase (Analytics)
+- Firebase project with Analytics, for Android builds
 
 ## 🛠️ Setup
 
@@ -65,37 +67,32 @@ flutter pub get
 
 ### 3. Configuration Files Setup
 
-**Environment variables.** Copy `assets/.env_example` to `assets/.env` and fill
-in the values. The template lists every key with what it is for, and is the one
-place that list is maintained. `pubspec.yaml` declares `assets/.env`, so the
-file has to exist or the build fails. Debug builds use Google's demo ad units
-and need no real ids, and the demo unit for an inline adaptive request is not
-the same id as the fixed-size one.
+**Environment variables.** Copy `assets/.env_example` to `assets/.env` and fill in the values.
+The template lists every key with what it is for, and is the one place that list is maintained.
+`pubspec.yaml` declares `assets/.env`, so the file has to exist or the build fails.
+Debug builds use Google's demo ad units and need no real ids, and the demo unit for an inline adaptive request is not the same id as the fixed-size one.
 
-**Android signing, release only.** Copy `android/key.properties.example` to
-`android/key.properties` and fill it in. Nothing in it ships inside the app, and
-the two passwords are real secrets: together with the keystore they let anyone
-publish an update Play accepts as coming from you. Keep the keystore outside the
-repository and back both up. A release built without this file falls back to the
-debug signing config, which produces an artifact Play rejects.
+**Android signing, release only.** Copy `android/key.properties.example` to `android/key.properties` and fill it in.
+Nothing in it ships inside the app, and the two passwords are real secrets: together with the keystore they let anyone publish an update Play accepts as coming from you.
+Keep the keystore outside the repository and back both up.
+`android/app/build.gradle` declares the release signing config unconditionally and reads the store path from that file, so without it the store path evaluates to null.
 
 ### 4. Firebase Configuration
-1. Create a Firebase project
-2. Place `google-services.json` (Android) in `android/app/`
-3. Place `GoogleService-Info.plist` (iOS) in `ios/Runner/`
-4. These files are tracked here. The Gradle plugin fails the Android build
-   without the json, and the Xcode project lists the plist in its Resources
-   phase, so excluding them only broke fresh clones. They carry the same
-   identifiers as `lib/firebase_options.dart`, which ship inside the app.
-   Real secrets stay out: the keystore and the environment file
+
+Firebase is initialized on Android only: `lib/main.dart` calls `Firebase.initializeApp()` inside `if (Platform.isAndroid)`, and `ios/Runner.xcodeproj/project.pbxproj` contains no reference to a GoogleService file.
+
+1. Create a Firebase project and add an Android app with the application id `com.nakajimamasao.studyjpword`.
+2. Download `google-services.json` from Project settings > Your apps and place it in `android/app/`.
+3. That file is git-ignored, so a fresh clone has to download it again before the Android build will run.
+4. The initialization call passes no options, because Android auto-initializes the default app from `google-services.json`.
 
 ### 5. Run the Application
 ```bash
 # Android
-flutter run
+flutter run -d <android-device-id>
 
 # iOS (Swift Package Manager: there is no Podfile to install)
-flutter run
+flutter run -d <ios-device-id>
 ```
 
 ## 🎮 Application Structure
@@ -103,64 +100,38 @@ flutter run
 ```
 lib/
 ├── main.dart                    # Application entry point
-├── homepage.dart                # Main kana/word learning page
-├── listpage.dart                # Kana/word selection grid
+├── list_page.dart               # Kana selection grid, the first screen
+├── homepage.dart                # Kana and word learning page
 ├── tts_manager.dart             # Text-to-speech management
-├── admob_banner.dart            # Banner advertisement management
-├── constant.dart                # Constant definitions
-├── extension.dart               # Extension functions
-└── firebase_options.dart        # Firebase configuration
+├── admob_banner.dart            # Banner ad and UMP consent, Android only
+├── constant.dart                # Constant definitions and the kana list
+└── extension.dart               # Extension functions, word and image data
 
 assets/
-├── image/                       # Learning images for words
-│   ├── sakura.png               # Word images for each vocabulary
-│   ├── neko.png
-│   ├── inu.png
-│   └── ...                      # 169+ word images total
-├── fonts/                       # Font files
-│   └── JPWordFont.ttf           # Custom font
-├── icon/                        # App icons
-│   ├── icon.png
-│   ├── appIcon.png
-│   └── splash.png
-└── .env                         # Environment variables
+├── image/                       # 206 PNG files, 180 of them referenced by extension.dart
+├── fonts/                       # hiraginokakugothicw3.ttc
+├── icon/                        # App icons, splash image, title images
+├── screenshot/                  # Store screenshots
+├── .env_example                 # Environment variable template
+└── .env                         # Environment variables, git-ignored
 ```
-
-## 🎨 Learning Content
-
-### Hiragana & Katakana
-- All 46 basic Hiragana
-- All 46 basic Katakana
-- Voiced, semi-voiced, and combination kana
-
-### Vocabulary Words
-- 169+ common Japanese words
-- Each word includes: image, kana, and pronunciation
 
 ## 📱 Supported Platforms
 
-- **Android**: API 23+ (Android 6.0+)
-- **iOS**: iOS 14.0+
-- **Web**: Coming soon
+- **Android**: API 24+ (`flutter.minSdkVersion`), compiled and targeted against SDK 37
+- **iOS**: iOS 15.0+ (`IPHONEOS_DEPLOYMENT_TARGET` on the Runner target)
 
 ## 🔧 Development
 
 ### Code Analysis
 ```bash
-flutter analyze
+flutter analyze   # expected: No issues found!
 ```
 
 ### Run Tests
 
-There are none. The `flutter create` counter test was removed on 2026-09-02
-because it asserted on a widget this app does not have and could only ever fail,
-which made a red `flutter test` indistinguishable from a real failure.
-
+This repository has no `test/` directory, so `flutter test` has nothing to run.
 `flutter analyze` is the check that runs clean and is expected to stay that way.
-
-```bash
-flutter analyze   # expected: No issues found!
-```
 
 ### Build
 ```bash
@@ -176,100 +147,47 @@ flutter build ios
 
 ### Generate App Icons
 ```bash
-flutter pub run flutter_launcher_icons:main
+dart run flutter_launcher_icons
 ```
 
 ### Generate Splash Screen
 ```bash
-flutter pub run flutter_native_splash:create
+dart run flutter_native_splash:create
 ```
-
-## 🎯 Learning Features
-
-### Interactive Learning
-- **Tap to Hear**: Tap any kana or word to hear pronunciation
-- **Visual Aids**: Each word has an associated image
-- **Progress Tracking**: Firebase Analytics tracks learning progress
-
-### Text-to-Speech Features
-- **High-Quality Voices**: Platform-optimized Japanese voice
-- **Clear Pronunciation**: Optimized speech rate for learning
-- **Ready for Expansion**: Easily add more words or features
-
-### User Experience
-- **Responsive Design**: Adapts to different screen sizes
-- **Intuitive Navigation**: Simple grid-based selection
-- **Accessibility**: Large text and clear contrast
-
-## 🔒 Security
-
-This project includes security measures to protect sensitive information:
-- Environment variables for API keys
-- Firebase configuration files are excluded from version control
-- Ad unit IDs are stored in environment files
-- Keystore files are properly excluded
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is not open source.
+The source is published so that it can be read, and all rights are reserved.
+See [LICENSE](LICENSE) for what that permits.
+Third-party components keep their own licenses, listed below.
 
 ## 🤝 Contributing
 
-Pull requests and issue reports are welcome. Please ensure your code follows the existing style and includes appropriate tests.
+Issue reports are welcome.
+Pull requests are not accepted, because the code is not licensed for redistribution.
 
 ## 📞 Support
 
 If you have any problems or questions, please create an issue on GitHub.
 
-## 🚀 Getting Started
-
-For new developers:
-1. Follow the setup instructions above
-2. Check the application structure
-3. Review the kana and vocabulary content organization
-4. Start with the main.dart file to understand the app flow
-5. Explore the tts_manager.dart for text-to-speech functionality
-
----
-
-<div align="center">
-  <strong>JPWord</strong> - Making Japanese learning fun and effective!
-</div>
-
 ## Licenses & Credits
 
-This app uses the following open-source libraries:
+This app uses the following third-party components:
 
 - Flutter (BSD 3-Clause License)
-- firebase_core, firebase_analytics (Apache License 2.0)
+- firebase_core, firebase_analytics (BSD 3-Clause License)
 - google_mobile_ads (Apache License 2.0)
+- Google Mobile Ads Android SDK (Android Software Development Kit License): `play-services-ads`, pulled in by google_mobile_ads
+- Google Mobile Ads iOS SDK (proprietary Google binary; its CocoaPods spec declares only a Google copyright notice, with no open-source license): `Google-Mobile-Ads-SDK`, pulled in by google_mobile_ads
+- User Messaging Platform, the consent SDK (Android Software Development Kit License): `com.google.android.ump:user-messaging-platform`, pulled in by google_mobile_ads
+- User Messaging Platform on iOS (proprietary Google binary, declared the same way as the iOS ads SDK): `GoogleUserMessagingPlatform`, pulled in by `Google-Mobile-Ads-SDK`
 - flutter_dotenv (MIT License)
-- flutter_tts (BSD 3-Clause License)
+- flutter_tts (MIT License), vendored at `packages/flutter_tts`
 - hooks_riverpod, flutter_hooks (MIT License)
 - cupertino_icons (MIT License)
 - flutter_launcher_icons (MIT License)
 - flutter_native_splash (MIT License)
-- app_tracking_transparency (MIT License)
 
 For details of each license, please refer to [pub.dev](https://pub.dev/) or the LICENSE file in each repository.
 
-## 📊 Analytics & Privacy
-
-- **Firebase Analytics**: Tracks app usage and learning progress
-- **App Tracking Transparency**: iOS privacy compliance
-- **AdMob**: Banner ads for monetization
-
-## 🎓 Educational Value
-
-JPWord is designed to help:
-- **Japanese Learners**: Master Hiragana, Katakana, and basic vocabulary
-- **Early Learners**: Learn basic Japanese sounds and words
-- **ESL/Foreign Students**: Practice Japanese pronunciation
-- **Special Education**: Visual and auditory learning support
-- **Parents & Teachers**: Educational tool for Japanese instruction
-
----
-
-<div align="center">
-  <strong>JPWord</strong> - Empowering learners through interactive Japanese education!
-</div>
