@@ -57,22 +57,22 @@ class HomePage extends HookConsumerWidget {
     }, [counter.value, jaWordList.value]);
 
     return Scaffold(
-      /// AppBar with title image and back button
+      // AppBar with title image and back button
       appBar: home.homeAppBar(),
-      /// Body with main learning interface
+      // Body with main learning interface
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: context.sideMargin()),
         child: Column(children: [
           Spacer(flex: 1),
-          /// Character and word display section
+          // Character and word display section
           Row(children: List.generate(5, (i) =>
             (i % 2 == 0) ? Spacer():
             Column(children: [
-              /// Japanese character button
+              // Japanese character button
               home.charButton(char, index: i,
                 onTap: () => ttsManager.speakText(char)
               ),
-              /// Word, picture, and audio button section
+              // Word, picture, and audio button section
               GestureDetector(
                 onTap: () => ttsManager.speakText(sound[(i - 1)~/2]),
                 child: Column(children: [
@@ -83,7 +83,7 @@ class HomePage extends HookConsumerWidget {
               ),
             ]),
           )),
-          /// Operation buttons section
+          // Operation buttons section
           Row(children: List.generate(9, (i) =>
             (i == 2 || i == 6) ? SizedBox(width: context.buttonMargin()):
             (i % 2 == 0) ? Spacer():
@@ -92,7 +92,7 @@ class HomePage extends HookConsumerWidget {
             ),
           )),
           Spacer(flex: 1),
-          /// Banner advertisement (Android only)
+          // Banner advertisement (Android only)
           (Platform.isAndroid) ? AdBannerWidget(): SizedBox(height: context.admobHeight()),
         ]),
       ),

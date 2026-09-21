@@ -24,12 +24,11 @@ class AdBannerWidget extends HookWidget {
     final adFailedLoading = useState(false);
     // State to hold the BannerAd instance
     final bannerAd = useState<BannerAd?>(null);
-    // Ref, not state: the consent callbacks resolve after this widget can be
-    // gone, and writing to a disposed ValueNotifier asserts in debug
+    // Ref, not state: consent callbacks can resolve after dispose, and a disposed ValueNotifier asserts in debug.
     final isAdRequested = useRef(false);
     // final testIdentifiers = ['2793ca2a-5956-45a2-96c0-16fafddc1a15'];
 
-    /// Banner ad unit ID from .env: test ID in debug mode, production ID otherwise
+    // Banner ad unit ID from .env: test ID in debug mode, production ID otherwise
     // Branches were once swapped, so every release build served Google's test banner
     String bannerUnitId() => kDebugMode
         ? androidBannerTestId
@@ -37,8 +36,8 @@ class AdBannerWidget extends HookWidget {
 
     /// Load banner advertisement and set up event listeners
     Future<void> loadAdBanner() async {
-      // largeBanner asked for a fixed 320x100 inside a box sized by admobWidth
-      // and admobHeight. Inline adaptive asks for that box's width and height
+      // largeBanner asked for a fixed 320x100 inside a box sized by admobWidth and admobHeight.
+      // Inline adaptive asks for that box's width and height.
       final cap = context.admobHeight().toInt();
       final size = AdSize.getInlineAdaptiveBannerAdSize(
           context.admobWidth().toInt(), cap);
@@ -52,8 +51,7 @@ class AdBannerWidget extends HookWidget {
             // Mount first; the await below only feeds a debug line
             adLoaded.value = true;
             if (kDebugMode) {
-              // Requested and served together: neither alone separates the size
-              // asked for from the creative Google had to hand
+              // Requested and served together: neither alone tells the size asked for from the creative served.
               final served = await (ad as BannerAd).getPlatformAdSize();
               'AdSize: ${size.width} x cap $cap / served: ${served?.width} x ${served?.height}'.debugPrint();
             }
@@ -78,14 +76,14 @@ class AdBannerWidget extends HookWidget {
     Future<void> requestAdIfAllowed() async {
       if (isAdRequested.value) return;
       if (!await ConsentInformation.instance.canRequestAds()) return;
-      // Both callers race across that await. The claim happens with no await in
-      // between, so the second to resume sees the flag and makes no second BannerAd
+      // Both callers race across that await.
+      // The claim happens with no await in between, so the second to resume sees the flag and adds no BannerAd.
       if (isAdRequested.value) return;
       isAdRequested.value = true;
       await loadAdBanner();
     }
 
-    /// Initialize ad loading and consent when widget is created
+    // Initialize ad loading and consent when widget is created
     useEffect(() {
       ConsentInformation.instance.requestConsentInfoUpdate(ConsentRequestParameters(
         // consentDebugSettings: ConsentDebugSettings(
@@ -93,8 +91,8 @@ class AdBannerWidget extends HookWidget {
         //   testIdentifiers: testIdentifiers,
         // ),
       ), () async {
-        // The SDK decides whether a form is required and shows it. Do not load the ad
-        // from the form callback: it fires on close even when the user declined
+        // The SDK decides whether a form is required and shows it.
+        // Do not load the ad from the form callback: it fires on close even when the user declined.
         await ConsentForm.loadAndShowConsentFormIfRequired((formError) async {
           if (formError != null) {
             "formError: ${formError.errorCode}: ${formError.message}".debugPrint();
@@ -102,8 +100,7 @@ class AdBannerWidget extends HookWidget {
           await requestAdIfAllowed();
         });
       }, (FormError error) async {
-        // The update failed, but consent from an earlier session still stands and
-        // canRequestAds can still say yes, so do not stop here
+        // The update failed, but earlier consent can still make canRequestAds true, so do not stop here.
         "error: ${error.errorCode}: ${error.message}".debugPrint();
         await requestAdIfAllowed();
       });

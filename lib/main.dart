@@ -33,8 +33,8 @@ Future<void> main() async {
   }
   // Load environment variables from .env file
   await dotenv.load(fileName: "assets/.env");
-  // No options: Android auto-initializes [DEFAULT] from google-services.json and
-  // differing options throw duplicate-app. Analytics uses that same default app
+  // No options: Android auto-initializes [DEFAULT] from google-services.json, and differing options throw duplicate-app.
+  // Analytics uses that same default app.
   if (Platform.isAndroid) await Firebase.initializeApp();
   // Start the application with Riverpod provider scope
   runApp(const ProviderScope(child: MyApp()));

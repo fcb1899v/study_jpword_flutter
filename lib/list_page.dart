@@ -23,9 +23,9 @@ class ListPage extends HookConsumerWidget {
     }, []);
 
     return Scaffold(
-      /// AppBar with title image
+      // AppBar with title image
       appBar: list.listAppBar(),
-      /// Body with grid layout of Japanese words
+      // Body with grid layout of Japanese words
       body: Container(
         color: yellowColor,
         padding: EdgeInsets.all(listTopMargin),
