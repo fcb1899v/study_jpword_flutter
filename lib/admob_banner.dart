@@ -1,7 +1,5 @@
 // AdMob Banner Widget
-//
-// Displays banner advertisements using Google AdMob SDK.
-// Only works on Android platform, returns empty widget on iOS.
+// Displays banner ads using Google AdMob SDK. Android only; empty widget on iOS.
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +29,8 @@ class AdBannerWidget extends HookWidget {
     final isAdRequested = useRef(false);
     // final testIdentifiers = ['2793ca2a-5956-45a2-96c0-16fafddc1a15'];
 
-    /// Get banner ad unit ID from environment variables
-    /// Uses test ID in debug mode, production ID otherwise
-    // The two branches used to be the wrong way round, so every release build
-    // served Google's test banner and earned nothing
+    /// Banner ad unit ID from .env: test ID in debug mode, production ID otherwise
+    // Branches were once swapped, so every release build served Google's test banner
     String bannerUnitId() => kDebugMode
         ? androidBannerTestId
         : dotenv.get('ANDROID_BANNER_UNIT_ID');
@@ -77,17 +73,13 @@ class AdBannerWidget extends HookWidget {
       bannerAd.value = adBanner;
     }
 
-    /// The single gate for the ad request. canRequestAds is the SDK's own
-    /// verdict: it already weighs the region, the TCF consent string and
-    /// Additional Consent, so the app must not read ConsentStatus and decide
-    /// for itself. A false answer also covers "the SDK could not tell", and
-    /// letting that through is what serving without consent looks like in the EEA
+    /// Single gate for the ad request. canRequestAds is the SDK's own verdict (region,
+    /// TCF, Additional Consent); false also covers "could not tell", so never bypass it
     Future<void> requestAdIfAllowed() async {
       if (isAdRequested.value) return;
       if (!await ConsentInformation.instance.canRequestAds()) return;
-      // Both callers below race across that await. Claiming the request happens
-      // with no await in between, so whoever resumes second always sees the
-      // flag and no second BannerAd is created for the same slot
+      // Both callers race across that await. The claim happens with no await in
+      // between, so the second to resume sees the flag and makes no second BannerAd
       if (isAdRequested.value) return;
       isAdRequested.value = true;
       await loadAdBanner();
@@ -101,10 +93,8 @@ class AdBannerWidget extends HookWidget {
         //   testIdentifiers: testIdentifiers,
         // ),
       ), () async {
-        // The SDK decides whether a form is required, loads it and presents it.
-        // The old flow called loadAdBanner from the consent form callback, which
-        // fires when the form closes no matter what the user chose, so a user
-        // who declined still got an ad request
+        // The SDK decides whether a form is required and shows it. Do not load the ad
+        // from the form callback: it fires on close even when the user declined
         await ConsentForm.loadAndShowConsentFormIfRequired((formError) async {
           if (formError != null) {
             "formError: ${formError.errorCode}: ${formError.message}".debugPrint();
@@ -112,9 +102,8 @@ class AdBannerWidget extends HookWidget {
           await requestAdIfAllowed();
         });
       }, (FormError error) async {
-        // The update failed, but consent given in an earlier session still
-        // stands and canRequestAds can still say yes. Stopping here would throw
-        // away impressions the SDK would have allowed
+        // The update failed, but consent from an earlier session still stands and
+        // canRequestAds can still say yes, so do not stop here
         "error: ${error.errorCode}: ${error.message}".debugPrint();
         await requestAdIfAllowed();
       });

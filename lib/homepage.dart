@@ -7,9 +7,8 @@ import 'extension.dart';
 import 'tts_manager.dart';
 import 'admob_banner.dart';
 
-/// Home Page
-/// Main Japanese word learning page that displays characters, words, and images
-/// Manages the interactive Japanese learning interface with TTS functionality
+/// Home Page: interactive Japanese word learning page showing characters, words
+/// and images with TTS playback.
 class HomePage extends HookConsumerWidget {
   /// Initial index for displaying the first word
   final int index;
@@ -125,10 +124,7 @@ class HomeWidget {
     centerTitle: true,
   );
 
-  /// Creates interactive character button for Japanese text
-  /// @param char The Japanese character to display
-  /// @param index Index for character selection (1=katakana, others=hiragana)
-  /// @param onTap Callback function when button is tapped
+  /// Interactive character button; [index] 1 shows katakana, others hiragana.
   GestureDetector charButton(String char, {
     required int index,
     required void Function() onTap,
@@ -149,9 +145,7 @@ class HomeWidget {
     ),
   );
 
-  /// Creates word widget with highlighted Japanese word parts
-  /// @param word List of word parts [prefix, sound, suffix]
-  /// @param index Index for word selection
+  /// Word widget with the target part highlighted; [word] is [prefix, sound, suffix].
   Container wordWidget(List<String> word, {
     required int index
   }) => Container(
@@ -205,9 +199,7 @@ class HomeWidget {
     ),
   );
 
-  /// Creates operation button for navigation and list management
-  /// @param icon Icon to display on the button
-  /// @param onTap Callback function when button is tapped
+  /// Operation button for navigation and list management.
   Widget operationButton(IconData icon, {
     required void Function() onTap,
   }) => GestureDetector(

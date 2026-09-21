@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 
-// =============================================================================
-// APP CONFIGURATION
-// =============================================================================
+// ===== APP CONFIGURATION =====
 
 const myTitle = 'たのしくまなぶ・ひらがな・カタカナ';
 const myFont = "Hiragino";
 const String appBarImage = "assets/icon/title_white.png";
 
-// =============================================================================
-// UI SIZING CONSTANTS
-// =============================================================================
+// ===== UI SIZING CONSTANTS =====
 
 const double listTopMargin = 10;
 const double listCharSize = 20;
 const double listMargin = 3;
 const double listPadding = 0;
 
-// =============================================================================
-// JAPANESE CHARACTER DATA
-// =============================================================================
+// ===== JAPANESE CHARACTER DATA =====
 
 const List<String> allJaWord = [
   "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
@@ -46,9 +40,7 @@ const List<String> allJaWord = [
   // "ぴょ" : "",
 ];
 
-// =============================================================================
-// COLOR CONSTANTS
-// =============================================================================
+// ===== COLOR CONSTANTS =====
 
 const Color whiteColor = Colors.white;
 const Color blackColor = Colors.black;
@@ -73,9 +65,7 @@ class HexColor extends Color {
   HexColor(String hexColor) : super(_getColorFromHex(hexColor));
 }
 
-// =============================================================================
-// UI STYLING
-// =============================================================================
+// ===== UI STYLING =====
 
 /// Standard shadow for cards and elevated elements
 /// Creates a subtle drop shadow with grey color, 2px spread, 4px blur, and 2px offset
@@ -86,16 +76,9 @@ BoxShadow myShadow() => BoxShadow(
   offset: Offset(2, 2), // Shadow offset from the element
 );
 
-// =============================================================================
-// NAVIGATION ICONS
-// =============================================================================
+// ===== NAVIGATION ICONS =====
 
-/// Navigation icons used in the app
-/// Index mapping:
-/// - 0: Reset button (keyboard_return icon)
-/// - 1: Shuffle button (shuffle icon)
-/// - 2: Back button (arrow_back icon)
-/// - 3: Next button (arrow_forward icon)
+/// Navigation icons, by index: 0 reset, 1 shuffle, 2 back, 3 next
 List<IconData> icons = [
   Icons.keyboard_return,  // Reset functionality
   Icons.shuffle,          // Shuffle/reorder items
@@ -103,16 +86,9 @@ List<IconData> icons = [
   Icons.arrow_forward     // Navigate forward
 ];
 
-// --- AdMob demo ad units ---
-// Google publishes these and they are the same for every developer, so they are
-// constants here rather than .env entries: they are not secret, and keeping them
-// in source means a missing .env key can no longer break a debug build. The
-// .env key this used to read was removed on 2026-09-02, which left every debug
-// build throwing from dotenv.get.
-// Production unit IDs stay in .env, because those are ours.
-// Only the Android banner is listed: homepage.dart shows AdBannerWidget on
-// Android alone, so no other unit is ever requested by this app.
-// https://developers.google.com/admob/android/test-ads  (checked 2026-09-02)
-// Adaptive banners have their own demo unit. The fixed size one (6300978111)
-// only serves 320x50, which makes every adaptive size look like 320x50
+/// AdMob demo ad units. Google publishes these and they are the same for every developer,
+/// so they are constants here rather than .env entries; production unit IDs stay in .env.
+/// Only the Android banner is listed: homepage.dart shows AdBannerWidget on Android alone.
+/// Use the adaptive unit; the fixed size one only serves 320x50.
+/// https://developers.google.com/admob/android/test-ads (checked 2026-09-02)
 const String androidBannerTestId = "ca-app-pub-3940256099942544/9214589741";

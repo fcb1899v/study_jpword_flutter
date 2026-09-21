@@ -10,9 +10,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'constant.dart';
 import 'list_page.dart';
 
-/// Application entry point
-/// Initializes Flutter, Firebase, AdMob, and environment variables
-/// Sets up the main application with proper configuration
+/// Application entry point: initializes Flutter, Firebase, AdMob and .env.
 Future<void> main() async {
   // Ensure Flutter is initialized before proceeding
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -35,22 +33,13 @@ Future<void> main() async {
   }
   // Load environment variables from .env file
   await dotenv.load(fileName: "assets/.env");
-  // No options: Android auto-initializes [DEFAULT] from google-services.json
-  // before main runs, and passing options that differ from it throws
-  // duplicate-app. Analytics attaches to that same native default app
+  // No options: Android auto-initializes [DEFAULT] from google-services.json and
+  // differing options throw duplicate-app. Analytics uses that same default app
   if (Platform.isAndroid) await Firebase.initializeApp();
   // Start the application with Riverpod provider scope
   runApp(const ProviderScope(child: MyApp()));
-  // Initialize Google Mobile Ads for Android platform
-  // Android only: no ad is requested on iOS. homepage.dart shows a plain
-  // SizedBox there instead of AdBannerWidget, and initialize() is gated below,
-  // so nothing on iOS ever reaches the ads SDK.
-  //
-  // Info.plist still carries GADApplicationIdentifier and it names this app's
-  // own AdMob iOS app, which is registered and has a store id. The key cannot
-  // be dropped while the plugin is linked, and naming Google's sample app there
-  // would put another publisher's id in a shipping build for no gain. Setting
-  // it correctly requests no ads; the gates below decide that.
+  // Android only: iOS never reaches the ads SDK (no AdBannerWidget, gated init).
+  // Info.plist keeps GADApplicationIdentifier because the linked plugin requires it
   if (Platform.isAndroid) MobileAds.instance.initialize();
 }
 
