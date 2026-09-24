@@ -105,7 +105,8 @@ lib/
 ├── tts_manager.dart             # Text-to-speech management
 ├── admob_banner.dart            # Banner ad and UMP consent, Android only
 ├── constant.dart                # Constant definitions and the kana list
-└── extension.dart               # Extension functions, word and image data
+├── extension.dart               # Extension functions, word and image data
+└── size_extension.dart          # SizeExt, responsive layout sizes (part of extension.dart)
 
 assets/
 ├── image/                       # 206 PNG files, 180 of them referenced by extension.dart
