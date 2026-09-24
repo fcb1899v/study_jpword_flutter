@@ -1,6 +1,7 @@
 // AdMob Banner Widget
 // Displays banner ads using Google AdMob SDK. Android only; empty widget on iOS.
 
+import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,8 +21,8 @@ class AdBannerWidget extends HookWidget {
   Widget build(BuildContext context) {
     // State to track if ad is loaded
     final adLoaded = useState(false);
-    // State to track if ad failed to load
-    final adFailedLoading = useState(false);
+    // Ref, not state: retry timers fire after the widget can be gone.
+    final retryAttempt = useRef(0);
     // State to hold the BannerAd instance
     final bannerAd = useState<BannerAd?>(null);
     // Ref, not state: consent callbacks can resolve after dispose, and a disposed ValueNotifier asserts in debug.
@@ -56,13 +57,20 @@ class AdBannerWidget extends HookWidget {
               'AdSize: ${size.width} x cap $cap / served: ${served?.width} x ${served?.height}'.debugPrint();
             }
           },
+          /// Retries with exponential backoff, capped attempts.
           onAdFailedToLoad: (ad, error) {
-            ad.dispose();
             'Ad: $ad failed to load: $error'.debugPrint();
-            adFailedLoading.value = true;
-            // Retry loading after 30 seconds if not loaded
-            Future.delayed(const Duration(seconds: 30), () {
-              if (!adLoaded.value && !adFailedLoading.value) loadAdBanner();
+            if (adLoaded.value) return;
+            ad.dispose();
+            retryAttempt.value += 1;
+            if (retryAttempt.value > bannerMaxRetry) return;
+            final backoffSec = math.min(
+              bannerRetryBaseSec * (1 << (retryAttempt.value - 1)),
+              bannerRetryMaxSec,
+            );
+            Future.delayed(Duration(seconds: backoffSec), () {
+              if (adLoaded.value || !context.mounted) return;
+              loadAdBanner();
             });
           },
         ),
