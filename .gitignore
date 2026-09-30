@@ -157,3 +157,8 @@ ios/build/
 *.certSigningRequest
 *.mobileprovision
 *.provisionprofile
+
+# Regenerable files: Xcode workspace state
+**/xcshareddata/IDEWorkspaceChecks.plist
+**/xcshareddata/WorkspaceSettings.xcsettings
+**/xcshareddata/WorkspaceSettings.xcsettings.xml
